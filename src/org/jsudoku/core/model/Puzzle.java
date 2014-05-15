@@ -114,6 +114,79 @@ public class Puzzle {
         possible[row][col] = value;
     }
 
+    /**
+     * Checks if this puzzle is solved.
+     * @return <code>true</code> if this puzzle is solved; otherwise <code>false</code>.
+     */
+    public boolean isSolved()
+    {
+        String pattern;             // Pattern that each row, column and minigrid has to follow when the puzzle is solved
+        int row, col;
+
+        // Check row by row
+        for(row = 0; row < 9; ++row)
+        {
+            pattern = "123456789";
+            for(col = 0; col < 9; ++col)
+            {
+                // Remove each actual number in the current row from the pattern
+                pattern = pattern.replace(String.valueOf(actual[row][col]), "");
+            }
+
+            // If there are numbers left in the pattern, then the row is not complete
+            // meaning that the puzzle is not solved
+            if(pattern.length() > 0)
+            {
+                return false;
+            }
+        }
+
+        // Check column by column
+        for(col = 0; col < 9; ++col)
+        {
+            pattern = "123456789";
+            for(row = 0; row < 9; ++row)
+            {
+                // Remove each actual number in the current column from the pattern
+                pattern = pattern.replace(String.valueOf(actual[row][col]), "");
+            }
+
+            // If there are numbers left in the pattern, then the column is not complete
+            // meaning that the puzzle is not solved
+            if(pattern.length() > 0)
+            {
+                return false;
+            }
+        }
+
+        // Check minigrid by minigrid
+        for(row = 0; row < 9; row += 3)
+        {
+            for(col = 0; col < 9; col += 3)
+            {
+                pattern = "123456789";
+                for(int mRow = 0; mRow < 3; ++mRow)
+                {
+                    for(int mCol = 0; mCol < 3; ++mCol)
+                    {
+                        // Remove each actual number in the current minigrid from the pattern
+                        pattern = pattern.replace(String.valueOf(actual[row + mRow][col + mCol]), "");
+                    }
+                }
+
+                // If there are numbers left in the pattern, then the minigrid is not complete
+                // meaning that the puzzle is not solved
+                if(pattern.length() > 0)
+                {
+                    return false;
+                }
+            }
+        }
+
+        // If all the previous checks didn't return false, it means that the puzzle is solved
+        return true;
+    }
+
     private int[][] actual;                         // A matrix holding the actual values of the puzzle
     private String[][] possible;                    // A matrix used to keep track of the possible values for each cell
 }
