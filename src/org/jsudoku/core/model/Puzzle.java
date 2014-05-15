@@ -70,6 +70,50 @@ public class Puzzle {
         }
     }
 
+    /**
+     * Returns the actual puzzle value from the position specified.
+     * @param row Row index of the value to be returned.
+     * @param col Column index of the value to be returned.
+     * @return The actual puzzle value from the position specified.
+     */
+    public int getActualAt(int row, int col)
+    {
+        return actual[row][col];
+    }
+
+    /**
+     * Sets the actual puzzle value on the position specified to the value specified.
+     * @param row Row index of the value to be set.
+     * @param col Column index of the value to be set.
+     * @param value Value to be set on the position specified.
+     */
+    public void setActualAt(int row, int col, int value)
+    {
+        actual[row][col] = value;
+    }
+
+    /**
+     * Returns the possible values for the cell specified by its position.
+     * @param row Row index of the cell.
+     * @param col Column index of the cell.
+     * @return The possible values for the cell.
+     */
+    public String getPossibleAt(int row, int col)
+    {
+        return possible[row][col];
+    }
+
+    /**
+     * Sets the possible values for the cell specified by its position.
+     * @param row Row index of the cell.
+     * @param col Column index of the cell.
+     * @param value Possible values to be set for the cell.
+     */
+    public void setPossibleAt(int row, int col, String value)
+    {
+        possible[row][col] = value;
+    }
+
     private int[][] actual;                         // A matrix holding the actual values of the puzzle
     private String[][] possible;                    // A matrix used to keep track of the possible values for each cell
 }
