@@ -30,4 +30,46 @@ package org.jsudoku.core.model;
  * @author sokolovic
  */
 public class Puzzle {
+
+    /**
+     * No-arg contructor to initialize an instance of the <code>Puzzle</code> class.
+     */
+    public Puzzle()
+    {
+        initializeActual();
+        initializePossible();
+    }
+
+    /**
+     * Initializes a matrix of puzzle actual values to all zero values.
+     */
+    private void initializeActual()
+    {
+        actual = new int[9][9];
+        for(int i = 0; i < 9; ++i)
+        {
+            for(int j = 0; j < 9; ++j)
+            {
+                actual[i][j] = 0;
+            }
+        }
+    }
+
+    /**
+     * Initializes a matrix of possible values for each cell to all empty strings.
+     */
+    private void initializePossible()
+    {
+        possible = new String[9][9];
+        for(int i = 0; i < 9; ++i)
+        {
+            for(int j = 0; j < 9; ++j)
+            {
+                possible[i][j] = "";
+            }
+        }
+    }
+
+    private int[][] actual;                         // A matrix holding the actual values of the puzzle
+    private String[][] possible;                    // A matrix used to keep track of the possible values for each cell
 }
