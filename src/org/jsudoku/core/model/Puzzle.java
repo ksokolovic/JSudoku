@@ -239,6 +239,25 @@ public class Puzzle {
         return true;
     }
 
+    /**
+     * Returns the string representation of the puzzle grid.
+     * @return String representation of the puzzle.
+     */
+    @Override
+    public String toString()
+    {
+        StringBuilder builder = new StringBuilder();
+        for(int row = 0; row < 9; ++row)
+        {
+            builder.append("\n");
+            for(int col = 0; col < 9; ++col)
+            {
+                builder.append(actual[row][col]).append(" ");
+            }
+        }
+        return builder.toString();
+    }
+
     private int[][] actual;                         // A matrix holding the actual values of the puzzle
     private String[][] possible;                    // A matrix used to keep track of the possible values for each cell
 }
