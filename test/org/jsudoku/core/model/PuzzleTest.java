@@ -95,10 +95,11 @@ public class PuzzleTest extends TestCase {
      */
     private void initializeInvalidSolvedPuzzle()
     {
+        // The invalid value is at (2, 3) position: 7 instead of 4
         int[][] puzzle = new int[][] {
             {9, 5, 4, 3, 8, 2, 1, 7, 6},
             {7, 3, 6, 1, 9, 5, 4, 8, 2},
-            {8, 1, 2, 4, 6, 7, 3, 5, 9},
+            {8, 1, 2, 7, 6, 7, 3, 5, 9},
             {1, 8, 3, 9, 2, 6, 5, 4, 7},
             {6, 4, 5, 8, 7, 3, 9, 2, 1},
             {2, 9, 7, 5, 4, 1, 8, 6, 3},
@@ -153,10 +154,17 @@ public class PuzzleTest extends TestCase {
 
     }
 
+    /**
+     * Method tests various cases for checking if the puzzle is solved.
+     * @throws Exception if an error occurred during the execution.
+     */
     @Test
     public void testIsSolved() throws Exception
     {
-
+        assertFalse(emptyPuzzle.isSolved());
+        assertFalse(unsolvedPuzzle.isSolved());
+        assertTrue(validSolvedPuzzle.isSolved());
+        assertFalse(invalidSolvedPuzzle.isSolved());
     }
 
     @Test
