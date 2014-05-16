@@ -33,10 +33,23 @@ public class Puzzle {
 
     /**
      * No-arg contructor to initialize an instance of the <code>Puzzle</code> class.
+     * This constructor initializes an empty puzzle with all zero values.
      */
     public Puzzle()
     {
         initializeActual();
+        initializePossible();
+    }
+
+    /**
+     * A constructor to initialize an instance of the <code>Puzzle</code> class.
+     * This constructor initializes a puzzle with the values passed as a two-dimensional array
+     * of numbers.
+     * @param puzzle Actual values of the puzzle to initialize.
+     */
+    public Puzzle(int[][] puzzle)
+    {
+        initializeActual(puzzle);
         initializePossible();
     }
 
@@ -46,11 +59,28 @@ public class Puzzle {
     private void initializeActual()
     {
         actual = new int[9][9];
-        for(int i = 0; i < 9; ++i)
+        for(int row = 0; row < 9; ++row)
         {
-            for(int j = 0; j < 9; ++j)
+            for(int col = 0; col < 9; ++col)
             {
-                actual[i][j] = 0;
+                actual[row][col] = 0;
+            }
+        }
+    }
+
+    /**
+     * Initializes a matrix of puzzle actual values to the values passed as a two-dimensional array
+     * of number.
+     * @param puzzle Actual values of the puzzle to initialize.
+     */
+    private void initializeActual(int[][] puzzle)
+    {
+        actual = new int[9][9];
+        for(int row = 0; row < 9; ++row)
+        {
+            for(int col = 0; col < 9; ++col)
+            {
+                actual[row][col] = puzzle[row][col];
             }
         }
     }
