@@ -109,6 +109,26 @@ public class PuzzleTest extends TestCase {
         invalidSolvedPuzzle = new Puzzle(puzzle);
     }
 
+    /**
+     * Method tests the initialized puzzle instances.
+     * @throws Exception if an error occurred during the execution.
+     */
+    @Test
+    public void testPuzzleInstances() throws Exception
+    {
+        // Assert that proper class instances are initialized
+        assertTrue(emptyPuzzle instanceof Puzzle);
+        assertTrue(unsolvedPuzzle instanceof Puzzle);
+        assertTrue(validSolvedPuzzle instanceof Puzzle);
+        assertTrue(invalidSolvedPuzzle instanceof Puzzle);
+
+        // Assert that initialized puzzles are not null
+        assertNotNull(emptyPuzzle);
+        assertNotNull(unsolvedPuzzle);
+        assertNotNull(validSolvedPuzzle);
+        assertNotNull(invalidSolvedPuzzle);
+    }
+
     @Test
     public void testGetActualAt() throws Exception
     {
