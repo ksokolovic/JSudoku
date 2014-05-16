@@ -167,10 +167,216 @@ public class PuzzleTest extends TestCase {
         assertFalse(invalidSolvedPuzzle.isSolved());
     }
 
+    /**
+     * Method tests various moves for checking if they are valid on the given puzzle.
+     * @throws Exception if an error occurred during the execution.
+     */
     @Test
     public void testIsMoveValid() throws Exception
     {
+        // Invalid move because of the duplicate in the row
+        assertFalse(unsolvedPuzzle.isMoveValid(0, 1, 5));
+        assertFalse(unsolvedPuzzle.isMoveValid(0, 7, 5));
+        assertFalse(unsolvedPuzzle.isMoveValid(0, 8, 5));
 
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 0, 3));
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 4, 3));
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 5, 3));
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 6, 3));
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 7, 3));
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 8, 3));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(2, 0, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(2, 2, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(2, 5, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(2, 8, 6));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 0, 1));
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 2, 1));
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 4, 1));
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 5, 1));
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 6, 1));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 0, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 1, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 3, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 4, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 5, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 7, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 8, 6));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 2, 2));
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 3, 2));
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 4, 2));
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 6, 2));
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 8, 2));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(6, 0, 4));
+        assertFalse(unsolvedPuzzle.isMoveValid(6, 3, 4));
+        assertFalse(unsolvedPuzzle.isMoveValid(6, 6, 4));
+        assertFalse(unsolvedPuzzle.isMoveValid(6, 8, 4));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 0, 3));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 1, 3));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 2, 3));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 3, 3));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 4, 3));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 8, 3));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(8, 0, 7));
+        assertFalse(unsolvedPuzzle.isMoveValid(8, 1, 7));
+        assertFalse(unsolvedPuzzle.isMoveValid(8, 7, 7));
+
+        // Invalid move because of the duplicate in the column
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 0, 9));
+        assertFalse(unsolvedPuzzle.isMoveValid(2, 0, 9));
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 0, 9));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 0, 9));
+        assertFalse(unsolvedPuzzle.isMoveValid(6, 0, 9));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 0, 9));
+        assertFalse(unsolvedPuzzle.isMoveValid(8, 0, 9));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(0, 1, 3));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 1, 3));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 1, 3));
+        assertFalse(unsolvedPuzzle.isMoveValid(8, 1, 3));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(2, 2, 8));
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 2, 8));
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 2, 8));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 2, 8));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 3, 9));
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 3, 9));
+        assertFalse(unsolvedPuzzle.isMoveValid(6, 3, 9));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 3, 9));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 4, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 4, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 4, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 4, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 4, 6));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 5, 2));
+        assertFalse(unsolvedPuzzle.isMoveValid(2, 5, 2));
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 5, 2));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 5, 2));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 6, 5));
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 6, 5));
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 6, 5));
+        assertFalse(unsolvedPuzzle.isMoveValid(6, 6, 5));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(0, 7, 1));
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 7, 1));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 7, 1));
+        assertFalse(unsolvedPuzzle.isMoveValid(8, 7, 1));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(0, 8, 4));
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 8, 4));
+        assertFalse(unsolvedPuzzle.isMoveValid(2, 8, 4));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 8, 4));
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 8, 4));
+        assertFalse(unsolvedPuzzle.isMoveValid(6, 8, 4));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 8, 4));
+
+        // Invalid move because of the duplicate in the minigrid
+        assertFalse(unsolvedPuzzle.isMoveValid(0, 1, 9));
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 0, 9));
+        assertFalse(unsolvedPuzzle.isMoveValid(2, 0, 9));
+        assertFalse(unsolvedPuzzle.isMoveValid(2, 2, 9));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 4, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 5, 6));
+        assertFalse(unsolvedPuzzle.isMoveValid(2, 5, 6));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(0, 7, 5));
+        assertFalse(unsolvedPuzzle.isMoveValid(0, 8, 5));
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 6, 5));
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 7, 5));
+        assertFalse(unsolvedPuzzle.isMoveValid(1, 8, 5));
+        assertFalse(unsolvedPuzzle.isMoveValid(2, 8, 5));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 0, 2));
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 2, 2));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 0, 2));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 1, 2));
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 2, 2));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 4, 1));
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 5, 1));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 3, 1));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 4, 1));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 5, 1));
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 3, 1));
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 4, 1));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(3, 6, 7));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 7, 7));
+        assertFalse(unsolvedPuzzle.isMoveValid(4, 8, 7));
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 6, 7));
+        assertFalse(unsolvedPuzzle.isMoveValid(5, 8, 7));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(6, 0, 4));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 0, 4));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 1, 4));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 2, 4));
+        assertFalse(unsolvedPuzzle.isMoveValid(8, 0, 4));
+        assertFalse(unsolvedPuzzle.isMoveValid(8, 1, 4));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(6, 3, 8));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 3, 8));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 4, 8));
+
+        assertFalse(unsolvedPuzzle.isMoveValid(6, 6, 2));
+        assertFalse(unsolvedPuzzle.isMoveValid(6, 8, 2));
+        assertFalse(unsolvedPuzzle.isMoveValid(7, 8, 2));
+        assertFalse(unsolvedPuzzle.isMoveValid(8, 7, 2));
+
+        // Valid move
+        assertTrue(unsolvedPuzzle.isMoveValid(0, 1, 7));
+        assertTrue(unsolvedPuzzle.isMoveValid(0, 7, 4));
+        assertTrue(unsolvedPuzzle.isMoveValid(0, 8, 3));
+        assertTrue(unsolvedPuzzle.isMoveValid(1, 0, 5));
+        assertTrue(unsolvedPuzzle.isMoveValid(1, 4, 4));
+        assertTrue(unsolvedPuzzle.isMoveValid(1, 5, 9));
+        assertTrue(unsolvedPuzzle.isMoveValid(1, 6, 7));
+        assertTrue(unsolvedPuzzle.isMoveValid(1, 7, 6));
+        assertTrue(unsolvedPuzzle.isMoveValid(1, 8, 2));
+        assertTrue(unsolvedPuzzle.isMoveValid(2, 0, 4));
+        assertTrue(unsolvedPuzzle.isMoveValid(2, 2, 2));
+        assertTrue(unsolvedPuzzle.isMoveValid(2, 5, 7));
+        assertTrue(unsolvedPuzzle.isMoveValid(2, 8, 1));
+        assertTrue(unsolvedPuzzle.isMoveValid(3, 0, 3));
+        assertTrue(unsolvedPuzzle.isMoveValid(3, 2, 4));
+        assertTrue(unsolvedPuzzle.isMoveValid(3, 4, 8));
+        assertTrue(unsolvedPuzzle.isMoveValid(3, 5, 5));
+        assertTrue(unsolvedPuzzle.isMoveValid(3, 6, 2));
+        assertTrue(unsolvedPuzzle.isMoveValid(4, 0, 8));
+        assertTrue(unsolvedPuzzle.isMoveValid(4, 1, 9));
+        assertTrue(unsolvedPuzzle.isMoveValid(4, 3, 2));
+        assertTrue(unsolvedPuzzle.isMoveValid(4, 4, 7));
+        assertTrue(unsolvedPuzzle.isMoveValid(4, 5, 4));
+        assertTrue(unsolvedPuzzle.isMoveValid(4, 7, 3));
+        assertTrue(unsolvedPuzzle.isMoveValid(4, 8, 5));
+        assertTrue(unsolvedPuzzle.isMoveValid(5, 2, 7));
+        assertTrue(unsolvedPuzzle.isMoveValid(5, 3, 6));
+        assertTrue(unsolvedPuzzle.isMoveValid(5, 4, 3));
+        assertTrue(unsolvedPuzzle.isMoveValid(5, 6, 4));
+        assertTrue(unsolvedPuzzle.isMoveValid(5, 8, 8));
+        assertTrue(unsolvedPuzzle.isMoveValid(6, 0, 1));
+        assertTrue(unsolvedPuzzle.isMoveValid(6, 3, 5));
+        assertTrue(unsolvedPuzzle.isMoveValid(6, 6, 6));
+        assertTrue(unsolvedPuzzle.isMoveValid(6, 8, 7));
+        assertTrue(unsolvedPuzzle.isMoveValid(7, 0, 7));
+        assertTrue(unsolvedPuzzle.isMoveValid(7, 1, 8));
+        assertTrue(unsolvedPuzzle.isMoveValid(7, 2, 5));
+        assertTrue(unsolvedPuzzle.isMoveValid(7, 3, 4));
+        assertTrue(unsolvedPuzzle.isMoveValid(7, 4, 2));
+        assertTrue(unsolvedPuzzle.isMoveValid(7, 8, 9));
+        assertTrue(unsolvedPuzzle.isMoveValid(8, 0, 6));
+        assertTrue(unsolvedPuzzle.isMoveValid(8, 1, 2));
+        assertTrue(unsolvedPuzzle.isMoveValid(8, 7, 5));
     }
 
     @Test
