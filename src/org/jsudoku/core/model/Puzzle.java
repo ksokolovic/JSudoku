@@ -187,6 +187,58 @@ public class Puzzle {
         return true;
     }
 
+    /**
+     * Checks if the move of placing the <code>value</code> in the cell with specified position is valid or not.
+     * @param row Row index of the cell.
+     * @param col Column index of the cell.
+     * @param value Value to be placed in the cell specified.
+     * @return <code>true</code> if the given move is valid; otherwise <code>false</code>.
+     */
+    public boolean isMoveValid(int row, int col, int value)
+    {
+        // Scan through the given row
+        for(int c = 0; c < 9; ++c)
+        {
+            // Check if the row already contains the given value
+            if(actual[row][c] == value)
+            {
+                // Duplicate in row
+                return false;
+            }
+        }
+
+        // Scan through the given column
+        for(int r = 0; r < 9; ++r)
+        {
+            // Check if the column already contains the given value
+            if(actual[r][col] == value)
+            {
+                // Duplicate in column
+                return false;
+            }
+        }
+
+        // Scan through the minigrid
+        int startC = col - (col % 3);
+        int startR = row - (row % 3);
+
+        for(int r = 0; r < 3; ++r)
+        {
+            for(int c = 0; c < 3; ++c)
+            {
+                // Check if the minigrid already contains the given value
+                if(actual[startR + r][startC + c] == value)
+                {
+                    // Duplicate in minigrid
+                    return false;
+                }
+            }
+        }
+
+        // If all the previous checks didn't return false, it means that the given move is valid
+        return true;
+    }
+
     private int[][] actual;                         // A matrix holding the actual values of the puzzle
     private String[][] possible;                    // A matrix used to keep track of the possible values for each cell
 }
