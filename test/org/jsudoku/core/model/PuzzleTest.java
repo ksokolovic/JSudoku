@@ -379,10 +379,30 @@ public class PuzzleTest extends TestCase {
         assertTrue(unsolvedPuzzle.isMoveValid(8, 7, 5));
     }
 
+    /**
+     * Method checks for the <code>toString()</code> method of the <code>Puzzle</code>
+     * class.
+     * Given the one hardcoded puzzle, the resulting string representation is created
+     * by hand and compared to the one that should be returned by the method.
+     * @throws Exception if an error occurred during the execution.
+     */
     @Test
     public void testToString() throws Exception
     {
+        String unsolvedPuzzleStr =
+            "9 0 8 1 6 2 5 0 0 \n" +
+            "0 3 1 8 0 0 0 0 0 \n" +
+            "0 6 0 3 5 0 9 8 0 \n" +
+            "0 1 0 9 0 0 0 7 6 \n" +
+            "0 0 6 0 0 0 1 0 0 \n" +
+            "2 5 0 0 0 1 0 9 0 \n" +
+            "0 4 3 0 9 8 0 2 0 \n" +
+            "0 0 0 0 0 6 3 1 0 \n" +
+            "0 0 9 7 1 3 8 0 4 \n";
 
+        assertNotNull(unsolvedPuzzle.toString());
+        assertFalse(unsolvedPuzzle.toString().length() == 0);
+        assertEquals(unsolvedPuzzleStr, unsolvedPuzzle.toString());
     }
 
     Puzzle emptyPuzzle;                 // Puzzle with all empty cells
