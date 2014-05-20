@@ -101,6 +101,21 @@ public class Puzzle {
     }
 
     /**
+     * Method checks if both the row and column indexes are valid.
+     * @param row Row index to check.
+     * @param col Column index to check.
+     * @return <code>true</code> if they are valid; <code>false</code> otherwise.
+     */
+    private boolean checkRange(int row, int col)
+    {
+        if(row < 0 || row > 8 || col < 0 || col > 8)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Returns the actual puzzle value from the position specified.
      * @param row Row index of the value to be returned.
      * @param col Column index of the value to be returned.
@@ -117,23 +132,20 @@ public class Puzzle {
         return actual[row][col];
     }
 
-    private boolean checkRange(int row, int col)
-    {
-        if(row < 0 || row > 8 || col < 0 || col > 8)
-        {
-            return false;
-        }
-        return true;
-    }
-
     /**
      * Sets the actual puzzle value on the position specified to the value specified.
      * @param row Row index of the value to be set.
      * @param col Column index of the value to be set.
      * @param value Value to be set on the position specified.
+     * @throws java.lang.IndexOutOfBoundsException if the specified row or column
+     * index are out of the range.
      */
-    public void setActualAt(int row, int col, int value)
+    public void setActualAt(int row, int col, int value) throws IndexOutOfBoundsException
     {
+        if(!checkRange(row, col))
+        {
+            throw new IndexOutOfBoundsException("Both row and column must be within [0..8] range.");
+        }
         actual[row][col] = value;
     }
 
@@ -142,9 +154,15 @@ public class Puzzle {
      * @param row Row index of the cell.
      * @param col Column index of the cell.
      * @return The possible values for the cell.
+     * @throws java.lang.IndexOutOfBoundsException if the specified row or column
+     * index are out of the range.
      */
-    public String getPossibleAt(int row, int col)
+    public String getPossibleAt(int row, int col) throws IndexOutOfBoundsException
     {
+        if(!checkRange(row, col))
+        {
+            throw new IndexOutOfBoundsException("Both row and column must be within [0..8] range.");
+        }
         return possible[row][col];
     }
 
@@ -153,9 +171,15 @@ public class Puzzle {
      * @param row Row index of the cell.
      * @param col Column index of the cell.
      * @param value Possible values to be set for the cell.
+     * @throws java.lang.IndexOutOfBoundsException if the specified row or column
+     * index are out of the range.
      */
-    public void setPossibleAt(int row, int col, String value)
+    public void setPossibleAt(int row, int col, String value) throws IndexOutOfBoundsException
     {
+        if(!checkRange(row, col))
+        {
+            throw new IndexOutOfBoundsException("Both row and column must be within [0..8] range.");
+        }
         possible[row][col] = value;
     }
 
