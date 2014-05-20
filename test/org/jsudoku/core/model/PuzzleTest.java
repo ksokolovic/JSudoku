@@ -161,11 +161,13 @@ public class PuzzleTest extends TestCase {
         assertEquals(unsolvedPuzzle.getActualAt(8, 8), 4);
     }
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
+    /**
+     * Method tests invalid cases for obtaining the value from the puzzle on
+     * the given position.
+     * @throws exception if an error occurred during the execution.
+     */
     @Test
-    public void testGetActualAtOutOfRange()
+    public void testGetActualAtOutOfRange() throws Exception
     {
         try
         {
