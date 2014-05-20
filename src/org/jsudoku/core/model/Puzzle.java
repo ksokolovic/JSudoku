@@ -105,10 +105,25 @@ public class Puzzle {
      * @param row Row index of the value to be returned.
      * @param col Column index of the value to be returned.
      * @return The actual puzzle value from the position specified.
+     * @throws java.lang.IndexOutOfBoundsException if the specified row or column
+     * index are out of the range.
      */
-    public int getActualAt(int row, int col)
+    public int getActualAt(int row, int col) throws IndexOutOfBoundsException
     {
+        if(!checkRange(row, col))
+        {
+            throw new IndexOutOfBoundsException("Both row and column must be within [0..8] range.");
+        }
         return actual[row][col];
+    }
+
+    private boolean checkRange(int row, int col)
+    {
+        if(row < 0 || row > 8 || col < 0 || col > 8)
+        {
+            return false;
+        }
+        return true;
     }
 
     /**

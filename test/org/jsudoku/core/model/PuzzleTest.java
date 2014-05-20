@@ -23,7 +23,9 @@ package org.jsudoku.core.model;
 
 import junit.framework.TestCase;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 /**
  * Unit test class to test the behavior of the <code>Puzzle</code> model class.
@@ -130,10 +132,80 @@ public class PuzzleTest extends TestCase {
         assertNotNull(invalidSolvedPuzzle);
     }
 
-    @Test
+    /**
+     * Method tests various cases for obtaining the value from the puzzle on
+     * the given position.
+     * @throws Exception if an error occurred during the execution.
+     */
+    @Test(expected = IndexOutOfBoundsException.class)
     public void testGetActualAt() throws Exception
     {
+        // In the empty puzzle, each value is zero
+        for(int row = 0; row < 9; ++row)
+        {
+            for(int col = 0; col < 9; ++col)
+            {
+                assertEquals(emptyPuzzle.getActualAt(row, col), 0);
+            }
+        }
 
+        // Testing against few random values of another puzzle
+        assertEquals(unsolvedPuzzle.getActualAt(0, 0), 9);
+        assertEquals(unsolvedPuzzle.getActualAt(1, 3), 8);
+        assertEquals(unsolvedPuzzle.getActualAt(2, 1), 6);
+        assertEquals(unsolvedPuzzle.getActualAt(3, 7), 7);
+        assertEquals(unsolvedPuzzle.getActualAt(4, 6), 1);
+        assertEquals(unsolvedPuzzle.getActualAt(5, 0), 2);
+        assertEquals(unsolvedPuzzle.getActualAt(6, 1), 4);
+        assertEquals(unsolvedPuzzle.getActualAt(7, 5), 6);
+        assertEquals(unsolvedPuzzle.getActualAt(8, 8), 4);
+    }
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void testGetActualAtOutOfRange()
+    {
+        try
+        {
+            unsolvedPuzzle.getActualAt(-1, 0);
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
+
+        try
+        {
+            unsolvedPuzzle.getActualAt(10, 0);
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
+
+        try
+        {
+            unsolvedPuzzle.getActualAt(0, -1);
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
+
+        try
+        {
+            unsolvedPuzzle.getActualAt(0, 10);
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
     }
 
     @Test
@@ -390,6 +462,7 @@ public class PuzzleTest extends TestCase {
     public void testToString() throws Exception
     {
         String unsolvedPuzzleStr =
+            "\n" +
             "9 0 8 1 6 2 5 0 0 \n" +
             "0 3 1 8 0 0 0 0 0 \n" +
             "0 6 0 3 5 0 9 8 0 \n" +
@@ -398,7 +471,7 @@ public class PuzzleTest extends TestCase {
             "2 5 0 0 0 1 0 9 0 \n" +
             "0 4 3 0 9 8 0 2 0 \n" +
             "0 0 0 0 0 6 3 1 0 \n" +
-            "0 0 9 7 1 3 8 0 4 \n";
+            "0 0 9 7 1 3 8 0 4 ";
 
         assertNotNull(unsolvedPuzzle.toString());
         assertFalse(unsolvedPuzzle.toString().length() == 0);
