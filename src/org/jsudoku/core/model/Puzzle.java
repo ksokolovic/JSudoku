@@ -106,9 +106,24 @@ public class Puzzle {
      * @param col Column index to check.
      * @return <code>true</code> if they are valid; <code>false</code> otherwise.
      */
-    private boolean checkRange(int row, int col)
+    private boolean checkIndexRange(int row, int col)
     {
         if(row < 0 || row > 8 || col < 0 || col > 8)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Method checks if the given value is the valid value for the sudoku puzzle.
+     * The zero-value is also valid in the given check, since it denotes none value.
+     * @param value Value to check.
+     * @return <code>true</code> if the given value is valid; otherwise <code>false</code>.
+     */
+    public boolean checkValueRange(int value)
+    {
+        if(value < 0 || value > 9)
         {
             return false;
         }
@@ -125,7 +140,7 @@ public class Puzzle {
      */
     public int getActualAt(int row, int col) throws IndexOutOfBoundsException
     {
-        if(!checkRange(row, col))
+        if(!checkIndexRange(row, col))
         {
             throw new IndexOutOfBoundsException("Both row and column must be within [0..8] range.");
         }
@@ -142,7 +157,7 @@ public class Puzzle {
      */
     public void setActualAt(int row, int col, int value) throws IndexOutOfBoundsException
     {
-        if(!checkRange(row, col))
+        if(!checkIndexRange(row, col))
         {
             throw new IndexOutOfBoundsException("Both row and column must be within [0..8] range.");
         }
@@ -159,7 +174,7 @@ public class Puzzle {
      */
     public String getPossibleAt(int row, int col) throws IndexOutOfBoundsException
     {
-        if(!checkRange(row, col))
+        if(!checkIndexRange(row, col))
         {
             throw new IndexOutOfBoundsException("Both row and column must be within [0..8] range.");
         }
@@ -176,7 +191,7 @@ public class Puzzle {
      */
     public void setPossibleAt(int row, int col, String value) throws IndexOutOfBoundsException
     {
-        if(!checkRange(row, col))
+        if(!checkIndexRange(row, col))
         {
             throw new IndexOutOfBoundsException("Both row and column must be within [0..8] range.");
         }
