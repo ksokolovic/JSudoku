@@ -154,12 +154,17 @@ public class Puzzle {
      * @param value Value to be set on the position specified.
      * @throws java.lang.IndexOutOfBoundsException if the specified row or column
      * index are out of the range.
+     * @throws java.lang.IllegalArgumentException if the specified value is out of the range.
      */
-    public void setActualAt(int row, int col, int value) throws IndexOutOfBoundsException
+    public void setActualAt(int row, int col, int value) throws IndexOutOfBoundsException, IllegalArgumentException
     {
         if(!checkIndexRange(row, col))
         {
             throw new IndexOutOfBoundsException("Both row and column must be within [0..8] range.");
+        }
+        if(!checkValueRange(value))
+        {
+            throw new IllegalArgumentException("Value must be within [0..9] range.");
         }
         actual[row][col] = value;
     }
