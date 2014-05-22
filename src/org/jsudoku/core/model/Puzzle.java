@@ -121,13 +121,27 @@ public class Puzzle {
      * @param value Value to check.
      * @return <code>true</code> if the given value is valid; otherwise <code>false</code>.
      */
-    public boolean checkValueRange(int value)
+    private boolean checkValueRange(int value)
     {
         if(value < 0 || value > 9)
         {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Method checks if the given string value is the valid value to set as
+     * possible to the puzzle cell. The string value must contain only digits
+     * 0 through 9 in order to be valid; additionally, an empty string is
+     * also valid.
+     * @param value Value to check.
+     * @return <code>true</code> if the given value is valid; otherwise <code>false</code>.
+     */
+    private boolean checkPossibleValue(String value)
+    {
+        String pattern = "[0-9]*";          // Only 0 through 9 digits or empty string allowed
+        return value.matches(pattern);
     }
 
     /**
@@ -193,12 +207,18 @@ public class Puzzle {
      * @param value Possible values to be set for the cell.
      * @throws java.lang.IndexOutOfBoundsException if the specified row or column
      * index are out of the range.
+     * @throws java.lang.IllegalArgumentException if the specified possible value
+     * is not in the correct format.
      */
-    public void setPossibleAt(int row, int col, String value) throws IndexOutOfBoundsException
+    public void setPossibleAt(int row, int col, String value) throws IndexOutOfBoundsException, IllegalArgumentException
     {
         if(!checkIndexRange(row, col))
         {
             throw new IndexOutOfBoundsException("Both row and column must be within [0..8] range.");
+        }
+        if(!checkPossibleValue(value))
+        {
+            throw new IllegalArgumentException("Possible values must be passed as string containing digits within [0..9] range.");
         }
         possible[row][col] = value;
     }
