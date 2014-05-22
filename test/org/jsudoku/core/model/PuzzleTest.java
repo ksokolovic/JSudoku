@@ -135,7 +135,6 @@ public class PuzzleTest extends TestCase {
      * the given position.
      * @throws Exception if an error occurred during the execution.
      */
-    @Test(expected = IndexOutOfBoundsException.class)
     public void testGetActualAt() throws Exception
     {
         // In the empty puzzle, each value is zero
@@ -297,16 +296,144 @@ public class PuzzleTest extends TestCase {
         }
     }
 
+    /**
+     * Method tests invalid cases for getting the possible values of
+     * the puzzle cell.
+     * @throws Exception if an error occurred during the execution.
+     */
     @Test
-    public void testGetPossibleAt() throws Exception
+    public void testGetPossibleAtIndexOutOfRange() throws Exception
     {
+        try
+        {
+            unsolvedPuzzle.getPossibleAt(-1, 0);
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
 
+        try
+        {
+            unsolvedPuzzle.getPossibleAt(10, 0);
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
+
+        try
+        {
+            unsolvedPuzzle.getPossibleAt(0, -1);
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
+
+        try
+        {
+            unsolvedPuzzle.getPossibleAt(0, 10);
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
     }
 
+    /**
+     * Method tests for setting the possible values of the puzzle cells to a given value.
+     * @throws Exception if an error occurred during the execution.
+     */
     @Test
     public void testSetPossibleAt() throws Exception
     {
+        // Simple test to preform setting at the valid position
+        unsolvedPuzzle.setPossibleAt(0, 0, "123456789");
+        assertEquals(unsolvedPuzzle.getPossibleAt(0, 0), "123456789");
+        // Empty string is also valid for the possible values
+        unsolvedPuzzle.setPossibleAt(0, 0, "");
+        assertEquals(unsolvedPuzzle.getPossibleAt(0, 0), "");
+    }
 
+    /**
+     * Method tests for invalid cases of setting the possible values of the
+     * puzzle cells to a given value.
+     * @throws Exception if an error occurred during the execution.
+     */
+    @Test
+    public void testSetPossibleAtIndexOutOfRange() throws Exception
+    {
+        try
+        {
+            unsolvedPuzzle.setPossibleAt(-1, 0, "1");
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
+
+        try
+        {
+            unsolvedPuzzle.setPossibleAt(10, 0, "1");
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
+
+        try
+        {
+            unsolvedPuzzle.setPossibleAt(0, -1, "1");
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
+
+        try
+        {
+            unsolvedPuzzle.setPossibleAt(0, 10, "1");
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
+    }
+
+    /**
+     * Method tests the invalid cases of setting the possible values of the puzzle cell
+     * by passing the invalid string as argument.
+     * @throws Exception if an error occurred during the execution.
+     */
+    @Test
+    public void testSetPossibleAtInvalidString() throws Exception
+    {
+        try
+        {
+            unsolvedPuzzle.setPossibleAt(0, 0, "-1-5-6");
+        }
+        catch(IllegalArgumentException exception)
+        {
+            assertTrue(exception.getMessage().contains("Possible values must be passed as string containing digits within [0..9] range."));
+        }
+
+        try
+        {
+            unsolvedPuzzle.setPossibleAt(0, 0, "12345abcd");
+        }
+        catch(IllegalArgumentException exception)
+        {
+            assertTrue(exception.getMessage().contains("Possible values must be passed as string containing digits within [0..9] range."));
+        }
     }
 
     /**
