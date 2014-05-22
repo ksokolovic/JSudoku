@@ -101,13 +101,63 @@ public class Puzzle {
     }
 
     /**
+     * Method checks if both the row and column indexes are valid.
+     * @param row Row index to check.
+     * @param col Column index to check.
+     * @return <code>true</code> if they are valid; <code>false</code> otherwise.
+     */
+    private boolean checkIndexRange(int row, int col)
+    {
+        if(row < 0 || row > 8 || col < 0 || col > 8)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Method checks if the given value is the valid value for the sudoku puzzle.
+     * The zero-value is also valid in the given check, since it denotes none value.
+     * @param value Value to check.
+     * @return <code>true</code> if the given value is valid; otherwise <code>false</code>.
+     */
+    private boolean checkValueRange(int value)
+    {
+        if(value < 0 || value > 9)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Method checks if the given string value is the valid value to set as
+     * possible to the puzzle cell. The string value must contain only digits
+     * 0 through 9 in order to be valid; additionally, an empty string is
+     * also valid.
+     * @param value Value to check.
+     * @return <code>true</code> if the given value is valid; otherwise <code>false</code>.
+     */
+    private boolean checkPossibleValue(String value)
+    {
+        String pattern = "[0-9]*";          // Only 0 through 9 digits or empty string allowed
+        return value.matches(pattern);
+    }
+
+    /**
      * Returns the actual puzzle value from the position specified.
      * @param row Row index of the value to be returned.
      * @param col Column index of the value to be returned.
      * @return The actual puzzle value from the position specified.
+     * @throws java.lang.IndexOutOfBoundsException if the specified row or column
+     * index are out of the range.
      */
-    public int getActualAt(int row, int col)
+    public int getActualAt(int row, int col) throws IndexOutOfBoundsException
     {
+        if(!checkIndexRange(row, col))
+        {
+            throw new IndexOutOfBoundsException("Both row and column must be within [0..8] range.");
+        }
         return actual[row][col];
     }
 
@@ -116,9 +166,20 @@ public class Puzzle {
      * @param row Row index of the value to be set.
      * @param col Column index of the value to be set.
      * @param value Value to be set on the position specified.
+     * @throws java.lang.IndexOutOfBoundsException if the specified row or column
+     * index are out of the range.
+     * @throws java.lang.IllegalArgumentException if the specified value is out of the range.
      */
-    public void setActualAt(int row, int col, int value)
+    public void setActualAt(int row, int col, int value) throws IndexOutOfBoundsException, IllegalArgumentException
     {
+        if(!checkIndexRange(row, col))
+        {
+            throw new IndexOutOfBoundsException("Both row and column must be within [0..8] range.");
+        }
+        if(!checkValueRange(value))
+        {
+            throw new IllegalArgumentException("Value must be within [0..9] range.");
+        }
         actual[row][col] = value;
     }
 
@@ -127,9 +188,15 @@ public class Puzzle {
      * @param row Row index of the cell.
      * @param col Column index of the cell.
      * @return The possible values for the cell.
+     * @throws java.lang.IndexOutOfBoundsException if the specified row or column
+     * index are out of the range.
      */
-    public String getPossibleAt(int row, int col)
+    public String getPossibleAt(int row, int col) throws IndexOutOfBoundsException
     {
+        if(!checkIndexRange(row, col))
+        {
+            throw new IndexOutOfBoundsException("Both row and column must be within [0..8] range.");
+        }
         return possible[row][col];
     }
 
@@ -138,9 +205,21 @@ public class Puzzle {
      * @param row Row index of the cell.
      * @param col Column index of the cell.
      * @param value Possible values to be set for the cell.
+     * @throws java.lang.IndexOutOfBoundsException if the specified row or column
+     * index are out of the range.
+     * @throws java.lang.IllegalArgumentException if the specified possible value
+     * is not in the correct format.
      */
-    public void setPossibleAt(int row, int col, String value)
+    public void setPossibleAt(int row, int col, String value) throws IndexOutOfBoundsException, IllegalArgumentException
     {
+        if(!checkIndexRange(row, col))
+        {
+            throw new IndexOutOfBoundsException("Both row and column must be within [0..8] range.");
+        }
+        if(!checkPossibleValue(value))
+        {
+            throw new IllegalArgumentException("Possible values must be passed as string containing digits within [0..9] range.");
+        }
         possible[row][col] = value;
     }
 
