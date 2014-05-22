@@ -23,9 +23,7 @@ package org.jsudoku.core.model;
 
 import junit.framework.TestCase;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 /**
  * Unit test class to test the behavior of the <code>Puzzle</code> model class.
@@ -164,10 +162,10 @@ public class PuzzleTest extends TestCase {
     /**
      * Method tests invalid cases for obtaining the value from the puzzle on
      * the given position.
-     * @throws exception if an error occurred during the execution.
+     * @throws Exception if an error occurred during the execution.
      */
     @Test
-    public void testGetActualAtOutOfRange() throws Exception
+    public void testGetActualAtIndexOutOfRange() throws Exception
     {
         try
         {
@@ -210,10 +208,93 @@ public class PuzzleTest extends TestCase {
         }
     }
 
+    /**
+     * Method tests for setting the actual value of the puzzle to a given value.
+     * @throws Exception if an error occurred during the execution.
+     */
     @Test
     public void testSetActualAt() throws Exception
     {
+        // Simple test to perform setting at the valid position
+        unsolvedPuzzle.setActualAt(0, 0, 1);
+        assertEquals(unsolvedPuzzle.getActualAt(0, 0), 1);
+    }
 
+    /**
+     * Method tests invalid cases for setting the value of the puzzle on
+     * the given position to the given value.
+     * @throws Exception if an error occurred during the execution.
+     */
+    @Test
+    public void testSetActualAtIndexOutOfRange() throws Exception
+    {
+        try
+        {
+            unsolvedPuzzle.setActualAt(-1, 0, 1);
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
+
+        try
+        {
+            unsolvedPuzzle.setActualAt(10, 0, 1);
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
+
+        try
+        {
+            unsolvedPuzzle.setActualAt(0, -1, 1);
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
+
+        try
+        {
+            unsolvedPuzzle.setActualAt(0, 10, 1);
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IndexOutOfBoundsException exception)
+        {
+            assertTrue(exception.getMessage().contains("Both row and column must be within [0..8] range."));
+        }
+    }
+
+    /**
+     * Method tests for setting an invalid value of the puzzle on the given position.
+     * @throws Exception if an error occurred during the execution
+     */
+    @Test
+    public void testSetActualAtValueOutOfRange() throws Exception
+    {
+        try
+        {
+            unsolvedPuzzle.setActualAt(0, 0, -1);
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IllegalArgumentException exception)
+        {
+            assertTrue(exception.getMessage().contains("Value must be within [0..9] range."));
+        }
+
+        try
+        {
+            unsolvedPuzzle.setActualAt(0, 0, 10);
+            fail("Should throw IndexOutOfBoundsException");
+        }
+        catch(IllegalArgumentException exception)
+        {
+            assertTrue(exception.getMessage().contains("Value must be within [0..9] range."));
+        }
     }
 
     @Test
