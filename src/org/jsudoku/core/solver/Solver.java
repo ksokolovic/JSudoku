@@ -26,7 +26,7 @@ import org.jsudoku.core.model.Puzzle;
 /**
  * The class implements various algorithms for solving the Sudoku puzzle. The following algoritms are implemented:
  * <ul>
- *     <li></li>
+ *     <li>Elimination Technique (Row, Column and Minigrid Elimination)</li>
  * </ul>
  *
  * @author sokolovic
@@ -34,16 +34,25 @@ import org.jsudoku.core.model.Puzzle;
 public class Solver {
 
     /**
+     * Constructor to initialize the <code>Solver</code> instance with the
+     * instance of the puzzle to solve here.
+     * @param puzzle
+     */
+    public Solver(Puzzle puzzle)
+    {
+        this.puzzle = puzzle;
+    }
+
+    /**
      * Method scans the individual cells in the grid from left to right, top to bottom.
      * It calls <code>calculatePossibleValues()</code> method, and if the possible value
      * returned is a single number, then the number for that cell is confirmed and the cell
      * in the grid is updated with the confirmed number.
-     * @param puzzle Puzzle that is being solved.
      * @return <code>true</code> if at least one cell if confirmed in a single pass, and
      * <code>false</code> if no cells get confirmed.
      * @throws java.lang.Exception if an invalid move has been made.
      */
-    private boolean checkColumnsAndRows(Puzzle puzzle) throws Exception
+    private boolean checkColumnsAndRows() throws Exception
     {
         boolean changes = false;
 
@@ -76,5 +85,7 @@ public class Solver {
 
         return changes;
     }
+
+    private final Puzzle puzzle;
 
 }
