@@ -145,6 +145,52 @@ public class Solver {
         return changes;
     }
 
+    /**
+     * Method looks into each of the nine rows and scans for lone rangers (from 1
+     * to 9). It starts from the first row and iteratively looks for lone rangers
+     * that may be present in the row, until the last row.
+     * @return <code>true</code> if a lone ranger is found in one of the rows;
+     * <code>false</code> otherwise.
+     */
+    private boolean lookForLoneRangersInRows()
+    {
+        boolean changes = false;        // Indicator for method return value
+        int occurence = 0;              // Number of occurences of the current number
+        int cPos = 0;                   // The column position of lone ranger
+        int rPos = 0;                   // The row position of lone ranger
+
+        // Check by row
+        for(int r = 0; r < 9; ++r)
+        {
+            for(int n = 1; n <= 9; ++n)
+            {
+                occurence = 0;
+                for(int c = 0; c < 9; ++c)
+                {
+                    if((puzzle.getActualAt(r, c) == 0) && (puzzle.getPossibleAt(r, c).contains(String.valueOf(n))))
+                    {
+                        occurence += 1;
+                        // If multiple occurences, not a lone ranger anymore
+                        if(occurence > 1)
+                        {
+                            break;
+                        }
+                        cPos = c;
+                        rPos = r;
+                    }
+                }
+
+                if(occurence == 1)
+                {
+                    // Number is confirmed
+                    puzzle.setActualAt(rPos, cPos, n);
+                    changes = true;
+                }
+            }
+        }
+        return changes;
+    }
+
     private final Puzzle puzzle;
 
 }
