@@ -105,6 +105,7 @@ public class Solver {
         // Check for each number, from 1 to 9
         for(int n = 1; n <= 9; ++n)
         {
+            occurence = 0;
             // Check the 9 minigrids
             for(int r = 0; r < 9; r += 3)
             {
