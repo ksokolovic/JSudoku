@@ -136,7 +136,7 @@ public class Solver {
                     if(!nextMiniGrid && (occurence == 1))
                     {
                         // That means the number is confirmed
-                        puzzle.setActualAt(cPos, rPos, n);
+                        puzzle.setActualAt(rPos, cPos, n);
                         changes = true;
                     }
                 }
