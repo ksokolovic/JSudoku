@@ -86,6 +86,65 @@ public class Solver {
         return changes;
     }
 
+    /**
+     * Method looks into each of the nine minigrids and scans for lone rangers
+     * (from 1 to 9). If a lone ranger is found, the number is confirmed and the
+     * cell in the grid is updated with the confirmed number.
+     * @return <code>true</code> if a lone ranger is found in one of the minigrids;
+     * <code>false</code> otherwise.
+     */
+    private boolean lookForLoneRangersInMinigrids()
+    {
+        boolean changes = false;        // Indicator for method return value
+        boolean nextMiniGrid;           // Should we move to next minigrid
+        int occurence = 0;              // Number of occurences of the current number
+        int cPos = 0;                   // The column position of lone ranger
+        int rPos = 0;                   // The row position of lone ranger
+
+        // Check for each number, from 1 to 9
+        for(int n = 1; n <= 9; ++n)
+        {
+            // Check the 9 minigrids
+            for(int r = 0; r < 9; r += 3)
+            {
+                for(int c = 0; c < 9; c += 3)
+                {
+                    nextMiniGrid = false;
+                    // Check within the minigrid
+                    for(int rr = 0; rr < 3; ++rr)
+                    {
+                        for(int cc = 0; cc < 3; ++cc)
+                        {
+                            if((puzzle.getActualAt(r + rr, c + cc) == 0) && (puzzle.getPossibleAt(r + rr, c + cc).contains(String.valueOf(n))))
+                            {
+                                occurence += 1;
+                                cPos = c + cc;
+                                rPos = r + rr;
+                                if(occurence > 1)
+                                {
+                                    nextMiniGrid = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if(nextMiniGrid)
+                        {
+                            break;
+                        }
+                    }
+
+                    if(!nextMiniGrid && (occurence == 1))
+                    {
+                        // That means the number is confirmed
+                        puzzle.setActualAt(cPos, rPos, n);
+                        changes = true;
+                    }
+                }
+            }
+        }
+        return changes;
+    }
+
     private final Puzzle puzzle;
 
 }
