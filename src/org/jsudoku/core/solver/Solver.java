@@ -398,6 +398,80 @@ public class Solver {
         return changes;
     }
 
+    /**
+     * Method scans through all the cells in the grid and looks for cells with
+     * two possible values. Once it finds a cell with two possible values, it
+     * searches for the cell's twin in the column that it is in. If there is indeed
+     * a pair of twins in the column, the rest of the cells in the column will have
+     * their list off possible values modified to remove the values of twins.
+     * After this process, if there are cells left with one possible value,
+     * those cells are updated with the confirmed number.
+     * @return <code>true</code> if there are any changes to the list of possible
+     * values for any of the cells in the grid; <code>false</code> otherwise.
+     * @throws java.lang.Exception if an invalid move has been made.
+     */
+    private boolean lookForTwinsInColumns() throws Exception
+    {
+        boolean changes = false;
+
+        // For each column, check each row in a column
+        for(int c = 0; c < 9; ++c)
+        {
+            for(int r = 0; r < 9; ++r)
+            {
+                // If two possible values, check for twins
+                if((puzzle.getActualAt(r, c) == 0) && (puzzle.getPossibleAt(r, c).length() == 2))
+                {
+                    // Scan rows in this column
+                    for(int rr = r + 1; rr < 9; ++rr)
+                    {
+                        if(puzzle.getPossibleAt(rr, c).equals(puzzle.getPossibleAt(r, c)))
+                        {
+                            // Remove the twins from all the other possible values in the row
+                            for(int rrr = 0; rrr < 9; ++rrr)
+                            {
+                                if((puzzle.getActualAt(rrr, c) == 0) && (rrr != r) && (rrr != rr))
+                                {
+                                    // Save a copy of the original possible values (twins)
+                                    String original_possible = puzzle.getPossibleAt(rrr, c);
+                                    // Remove the first twin number from possible values
+                                    puzzle.setPossibleAt(rrr, c,
+                                        puzzle.getPossibleAt(rrr, c).replace(puzzle.getPossibleAt(r, c).substring(0, 1), ""));
+                                    // Remove the second twin number from possible values
+                                    puzzle.setPossibleAt(rrr, c,
+                                        puzzle.getPossibleAt(rrr, c).replace(puzzle.getPossibleAt(r, c).substring(1, 2), ""));
+
+                                    // If the possible values are modified, then set changes variable to true
+                                    // to indicate that the possible values of cells in the minigrid have been
+                                    // modified
+                                    if(!original_possible.equals(puzzle.getPossibleAt(rrr, c)))
+                                    {
+                                        changes = true;
+                                    }
+
+                                    // If possible value reduces to empty string, then the user has
+                                    // placed a move that results in the puzzle being not solvable
+                                    if(puzzle.getPossibleAt(rrr, c).equals(""))
+                                    {
+                                        throw new Exception("Invalid move.");
+                                    }
+
+                                    // If left with one possible value for the current cell, cell is confirmed
+                                    if(puzzle.getPossibleAt(rrr, c).length() == 1)
+                                    {
+                                        puzzle.setActualAt(rrr, c,
+                                            Integer.parseInt(puzzle.getPossibleAt(rrr, c)));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return changes;
+    }
+
     private final Puzzle puzzle;
 
 }
