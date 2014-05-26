@@ -376,6 +376,40 @@ public class Puzzle {
     }
 
     /**
+     * Pushes the current actual matrix onto the stack so that it can be
+     * restored if necessary with <code>popActualStack()</code> method.
+     */
+    public void pushActualStack()
+    {
+        actualStack.push(actual.clone());
+    }
+
+    /**
+     * Pops the last actual matrix from the stack.
+     */
+    public void popActualStack()
+    {
+        actual = actualStack.pop();
+    }
+
+    /**
+     * Pushes the current possible matrix onto the stack so that it can be
+     * restored if necessary with <code>popPossibleStack()</code> method.
+     */
+    public void pushPossibleStack()
+    {
+        possibleStack.push(possible.clone());
+    }
+
+    /**
+     * Pops the last possible matrix from the stack.
+     */
+    public void popPossibleStack()
+    {
+        possible = possibleStack.pop();
+    }
+
+    /**
      * Returns the string representation of the puzzle grid.
      * @return String representation of the puzzle.
      */
