@@ -349,6 +349,31 @@ public class Puzzle {
     }
 
     /**
+     * Finds the cell with the least number of possible values.
+     * @return Integer array with two elements: the element at index 0 represents
+     * cell's row index, and the element at index 1 represents cell's column index.
+     */
+    public int[] findCellWithFewestPossibleValues()
+    {
+        int[] position = new int[2];
+        int min = 10;
+
+        for(int row = 0; row < 9; ++row)
+        {
+            for(int col = 0; col < 9; ++col)
+            {
+                if((actual[row][col] == 0) && (possible[row][col].length() < min))
+                {
+                    min = possible[row][col].length();
+                    position[0] = row;
+                    position[1] = col;
+                }
+            }
+        }
+        return position;
+    }
+
+    /**
      * Returns the string representation of the puzzle grid.
      * @return String representation of the puzzle.
      */
