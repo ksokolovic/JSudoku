@@ -28,6 +28,9 @@ import org.jsudoku.core.model.Puzzle;
  * <ul>
  *     <li>Elimination Technique (Row, Column and Minigrid Elimination)</li>
  *     <li>Lone Rangers Technique (Row, Column and Minigrid)</li>
+ *     <li>Looking for Twins Technique (Row, Column and Minigrid)</li>
+ *     <li>Looking for Triplets Technique (Row, Column and Minigrid)</li>
+ *     <li>Brute Force Elimination Technique</li>
  * </ul>
  *
  * @author sokolovic
@@ -42,6 +45,18 @@ public class Solver {
     public Solver(Puzzle puzzle)
     {
         this.puzzle = puzzle;
+    }
+
+    /**
+     * Method performes the core of the Sudoku solving by invoking the implemented
+     * algorithms in a specific order with an attempt to solve the puzzle.
+     * @return <code>true</code> if the puzzle is successfully solved; <code>false</code>
+     * otherwise.
+     */
+    public boolean solve()
+    {
+        // TODO
+        return false;
     }
 
     /**
@@ -770,6 +785,75 @@ public class Solver {
         return changes;
     }
 
-    private final Puzzle puzzle;
+    /**
+     * A recursive method that attempts to solve a Sudoku puzzle by systematically
+     * selecting a possible value from a cell and then applying all the other
+     * techiques to solve the puzzle. It calls itself until the puzzle is solved,
+     * or if selecting a particular value for a cell causes the puzzle to be unsolvable
+     * it backtracks by restoring the previous state of the grid from puzzle's stack.
+     */
+    public void solvePuzzleByBruteForce()
+    {
+        int row = 0;
+        int col = 0;
+
+        // Find out which cell has the smallest number of possible values
+        int[] cell = puzzle.findCellWithFewestPossibleValues();
+        row = cell[0];
+        col = cell[1];
+
+        // Get the possible values for the chosen cell
+        String possibleValues = puzzle.getPossibleAt(row, col);
+
+        // Randomize the possible values
+        possibleValues = randomizePossibleValues(possibleValues);
+
+        // Push the actual and possible matrices onto the stack
+        puzzle.pushActualStack();
+        puzzle.pushPossibleStack();
+
+        // Select one value and try
+        for(int i = 0; i <= possibleValues.length() - 1; ++i)
+        {
+            puzzle.setActualAt(row, col,
+                Integer.parseInt(possibleValues.substring(i, i + 1)));
+            try
+            {
+                if(solve())
+                {
+                    // If the puzzle is solved, the recursion can stop now
+                    bruteForceStop = true;
+                    return;
+                }
+                else
+                {
+                    solvePuzzleByBruteForce();
+                    if(bruteForceStop)
+                    {
+                        return;
+                    }
+                }
+            }
+            catch(Exception exception)
+            {
+                puzzle.popActualStack();
+                puzzle.popPossibleStack();
+            }
+        }
+    }
+
+    /**
+     * Method randomizes the list of possible values for a cell.
+     * @param str String containing the cell's possible values.
+     * @return Randomized list of cell's possible values as string.
+     */
+    private String randomizePossibleValues(String str)
+    {
+        // TODO
+        return str;
+    }
+
+    private final Puzzle puzzle;                        // The puzzle being solved
+    private boolean bruteForceStop = false;             // Indicate if the brute force method should stop
 
 }
