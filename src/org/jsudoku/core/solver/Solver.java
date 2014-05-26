@@ -55,10 +55,173 @@ public class Solver {
      * @return <code>true</code> if the puzzle is successfully solved; <code>false</code>
      * otherwise.
      */
-    public boolean solve()
+    public boolean solve() throws Exception
     {
-        // TODO
-        return false;
+        boolean changes;
+        boolean exitLoop = false;
+
+        try
+        {
+            do      // Look for Triplets in Columns
+            {
+                do      // Look for Triplets in Rows
+                {
+                    do      // Look for Triplets in Minigrids
+                    {
+                        do      // Look for Twins in Columns
+                        {
+                            do      // Look for Twins in Rows
+                            {
+                                do      // Look for Twins in Minigrids
+                                {
+                                    do      // Look for Lone Ranger in Columns
+                                    {
+                                        do      // Look for Lone Ranger in Rows
+                                        {
+                                            do      // Look for Lone Ranger in Minigrids
+                                            {
+                                                do      // Perform Column, Row and Minigrid Elimination
+                                                {
+                                                    changes = checkColumnsAndRows();
+                                                    if(puzzle.isSolved())
+                                                    {
+                                                        exitLoop = true;
+                                                        break;
+                                                    }
+                                                } while(changes);
+
+                                                if(exitLoop)
+                                                {
+                                                    break;
+                                                }
+
+                                                // Look for Lone Ranger in Minigrids
+                                                changes = lookForLoneRangersInMinigrids();
+                                                if(puzzle.isSolved())
+                                                {
+                                                    exitLoop = true;
+                                                    break;
+                                                }
+                                            } while(changes);
+
+                                            if(exitLoop)
+                                            {
+                                                break;
+                                            }
+
+                                            // Look for Lone Ranger in Rows
+                                            changes = lookForLoneRangersInRows();
+                                            if(puzzle.isSolved())
+                                            {
+                                                exitLoop = true;
+                                                break;
+                                            }
+                                        } while(changes);
+
+                                        if(exitLoop)
+                                        {
+                                            break;
+                                        }
+
+                                        // Look for Lone Ranger in Columns
+                                        changes = lookForLoneRangersInColumns();
+                                        if(puzzle.isSolved())
+                                        {
+                                            exitLoop = true;
+                                            break;
+                                        }
+                                    } while(changes);
+
+                                    if(exitLoop)
+                                    {
+                                        break;
+                                    }
+
+                                    // Look for Twins in Minigrids
+                                    changes = lookForTwinsInMinigrids();
+                                    if(puzzle.isSolved())
+                                    {
+                                        exitLoop = true;
+                                        break;
+                                    }
+                                } while(changes);
+
+                                if(exitLoop)
+                                {
+                                    break;
+                                }
+
+                                // Look for Twins in Rows
+                                changes = lookForTwinsInRows();
+                                if(puzzle.isSolved())
+                                {
+                                    exitLoop = true;
+                                    break;
+                                }
+                            } while(changes);
+
+                            if(exitLoop)
+                            {
+                                break;
+                            }
+
+                            // Look for Twins in Columns
+                            changes = lookForTwinsInColumns();
+                            if(puzzle.isSolved())
+                            {
+                                exitLoop = true;
+                                break;
+                            }
+                        } while(changes);
+
+                        if(exitLoop)
+                        {
+                            break;
+                        }
+
+                        // Look for Triplets in Minigrids
+                        changes = lookForTripletsInMinigrids();
+                        if(puzzle.isSolved())
+                        {
+                            exitLoop = true;
+                            break;
+                        }
+                    } while(changes);
+
+                    if(exitLoop)
+                    {
+                        break;
+                    }
+
+                    // Look for Triplets in Rows
+                    changes = lookForTripletsInRows();
+                    if(puzzle.isSolved())
+                    {
+                        exitLoop = true;
+                        break;
+                    }
+                } while(changes);
+
+                if(exitLoop)
+                {
+                    break;
+                }
+
+                // Look for Triplets in Columns
+                changes = lookForTripletsInColumns();
+                if(puzzle.isSolved())
+                {
+                    exitLoop = true;
+                    break;
+                }
+            } while(changes);
+        }
+        catch(Exception exception)
+        {
+            throw exception;
+        }
+
+        return puzzle.isSolved();
     }
 
     /**
