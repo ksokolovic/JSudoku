@@ -23,6 +23,8 @@ package org.jsudoku.core.solver;
 
 import org.jsudoku.core.model.Puzzle;
 
+import java.util.Random;
+
 /**
  * The class implements various algorithms for solving the Sudoku puzzle. The following algoritms are implemented:
  * <ul>
@@ -849,8 +851,26 @@ public class Solver {
      */
     private String randomizePossibleValues(String str)
     {
-        // TODO
-        return str;
+        char[] s = str.toCharArray();
+        int i, j;
+        char temp;
+        Random random = new Random();
+
+        for(i = 0; i <= str.length() - 1; ++i)
+        {
+            j = (int)((str.length() - i + 1) * random.nextDouble() + i) % str.length();
+            // Swap the chars
+            temp = s[i];
+            s[i] = s[j];
+            s[j] = temp;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for(int k = 0; k < s.length; ++k)
+        {
+            builder.append(s[k]);
+        }
+        return builder.toString();
     }
 
     private final Puzzle puzzle;                        // The puzzle being solved
