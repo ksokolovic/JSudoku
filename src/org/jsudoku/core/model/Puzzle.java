@@ -21,6 +21,8 @@
  */
 package org.jsudoku.core.model;
 
+import java.util.Stack;
+
 /**
  * Class models a 9x9 Sudoku puzzle. A Sudoku puzzle is made up of 9x9 grid filled with numbers in [1..9] range.
  * The aim of the Sudoku game is to place a number from 1 to 9 into each of the cells, such that each number
@@ -393,5 +395,9 @@ public class Puzzle {
     }
 
     private int[][] actual;                         // A matrix holding the actual values of the puzzle
+    private int[][] actualBackup;                   // Backup copy of the actual matrix
     private String[][] possible;                    // A matrix used to keep track of the possible values for each cell
+    private Stack<int[][]> actualStack;             // Stack object used to strore the actual array before a cell is fixed with a value
+    private Stack<String[][]> possibleStack;        // Stack object used to store the possible array before a cell is fixed with a value
+
 }
