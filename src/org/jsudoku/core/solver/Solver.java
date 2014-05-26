@@ -472,6 +472,113 @@ public class Solver {
         return changes;
     }
 
+    /**
+     * Method scans through all the cells in the grid and looks for cells with
+     * three possible values. Once it finds a cell with three possible values, it
+     * searches for two other triplets in the minigrid that the cell is in. If
+     * there is indeed a set of triplets in the minigrid, the rest of the cells
+     * in the minigrid will have their list of possible values modified to remove
+     * the values of triplets. After the process, if there are cells left with
+     * one possible value, those cells are updated with the confirmed number.
+     * @return <code>true</code> if there are any changes to the list of possible
+     * values for any of the cells in the grid; <code>false</code> otherwise.
+     * @throws java.lang.Exception if an invalid move has been made.
+     */
+    private boolean lookForTripletsInMinigrids() throws Exception
+    {
+        boolean changes = false;
+
+        // Check each cell
+        for(int r = 0; r < 9; ++r)
+        {
+            for(int c = 0; c < 9; ++c)
+            {
+                // Three possible values, check for triplets
+                if((puzzle.getActualAt(r, c) == 0) && (puzzle.getPossibleAt(r, c).length() == 3))
+                {
+                    // First potential triplet found
+                    String tripletsLocation = String.valueOf(r) + String.valueOf(c);
+
+                    // Scan by minigrid
+                    int startC = c - (c % 3);
+                    int startR = r - (r % 3);
+
+                    for(int rr = startR; rr < startR + 3; ++rr)
+                    {
+                        for(int cc = startC; cc < startC + 3; ++cc)
+                        {
+                            if((!((cc == c) && (rr == r))) &&
+                                ((puzzle.getPossibleAt(rr, cc).equals(puzzle.getPossibleAt(r, c))) ||
+                                    (puzzle.getPossibleAt(rr, cc).length() == 2 &&
+                                    puzzle.getPossibleAt(r, c).contains(puzzle.getPossibleAt(rr, cc).substring(0, 1)) &&
+                                    puzzle.getPossibleAt(r, c).contains(puzzle.getPossibleAt(rr, cc).substring(1, 2)))))
+                            {
+                                // Save the coordinate of the triplets
+                                tripletsLocation += String.valueOf(rr) + String.valueOf(cc);
+                            }
+                        }
+                    }
+
+                    // Found 3 cells as triplets; remove all from other cells
+                    if(tripletsLocation.length() == 6)
+                    {
+                        // Remove each cell's possible values containing the triplet
+                        for(int rrr = startR; rrr < startR + 3; ++rrr)
+                        {
+                            for(int ccc = startC; ccc < startC + 3; ++ccc)
+                            {
+                                // Look for the cell that is not part of the 3 cells found
+                                if((puzzle.getActualAt(rrr, ccc) == 0) &&
+                                    (rrr != Integer.parseInt(tripletsLocation.substring(0, 1))) &&
+                                    (ccc != Integer.parseInt(tripletsLocation.substring(1, 2))) &&
+                                    (rrr != Integer.parseInt(tripletsLocation.substring(2, 3))) &&
+                                    (ccc != Integer.parseInt(tripletsLocation.substring(3, 4))) &&
+                                    (rrr != Integer.parseInt(tripletsLocation.substring(4, 5))) &&
+                                    (ccc != Integer.parseInt(tripletsLocation.substring(5, 6))))
+                                {
+                                    // Save the original possible values
+                                    String original_possible = puzzle.getPossibleAt(rrr, ccc);
+                                    // Remove the first triplet number from possible values
+                                    puzzle.setPossibleAt(rrr, ccc,
+                                        puzzle.getPossibleAt(rrr, ccc).replace(puzzle.getPossibleAt(r, c).substring(0, 1), ""));
+                                    // Remove the second triplet number from possible values
+                                    puzzle.setPossibleAt(rrr, ccc,
+                                        puzzle.getPossibleAt(rrr, ccc).replace(puzzle.getPossibleAt(r, c).substring(1, 2), ""));
+                                    // Remove the third triplet number from possible values
+                                    puzzle.setPossibleAt(rrr, ccc,
+                                        puzzle.getPossibleAt(rrr, ccc).replace(puzzle.getPossibleAt(r, c).substring(2, 3), ""));
+
+                                    // If the possible values are modified, then set the changes variable to
+                                    // true to indicate that the possible values of cells in the minigrid are
+                                    // modified
+                                    if(!original_possible.equals(puzzle.getPossibleAt(rrr, ccc)))
+                                    {
+                                        changes = true;
+                                    }
+
+                                    // If possible value reduces to empty string, then the user has
+                                    // placed a move that results in the puzzle being not solvable
+                                    if(puzzle.getPossibleAt(rrr, ccc).equals(""))
+                                    {
+                                        throw new Exception("Invalid move.");
+                                    }
+
+                                    // If left with one possible value for the current cell, cell is confirmed
+                                    if(puzzle.getPossibleAt(rrr, ccc).length() == 1)
+                                    {
+                                        puzzle.setActualAt(rrr, ccc,
+                                            Integer.parseInt(puzzle.getPossibleAt(rrr, ccc)));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return changes;
+    }
+
     private final Puzzle puzzle;
 
 }
