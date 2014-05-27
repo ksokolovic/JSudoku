@@ -224,6 +224,77 @@ public class Puzzle {
     }
 
     /**
+     * Method calculates the possible values for a cell. It first scans its column, followed by
+     * its row, and then the minigrid it is in. If, after scanning, the possible value is an empty
+     * string, method raises an exception indicating that an error has occurred on some previous
+     * moves made.
+     * @param row Row index of the cell to be scanned.
+     * @param col Column index of the cell to be scanned.
+     * @return String containing the list of possible values for a specified field.
+     * @throws Exception if an error has occurred on some previously made moves.
+     */
+    public String calculatePossibleValues(int row, int col) throws Exception
+    {
+        // Get the current possible values for the cell
+        String str;
+        if(getPossibleAt(row, col).equals(""))
+        {
+            str = "123456789";
+        }
+        else
+        {
+            str = getPossibleAt(row, col);
+        }
+
+        int r, c;
+
+        // Step 1: Check by column
+        for(r = 0; r < 9; ++r)
+        {
+            if(getActualAt(r, col) != 0)
+            {
+                // That means there is an actual value in it
+                str = str.replace(String.valueOf(getActualAt(r, col)), "");
+            }
+        }
+
+        // Step 2: Check by column
+        for(c = 0; c < 9; ++c)
+        {
+            if(getActualAt(row, c) != 0)
+            {
+                // That means there is an actual value in it
+                str = str.replace(String.valueOf(getActualAt(c, row)), "");
+            }
+        }
+
+        // Step 3: Check within the minigrid
+        int startC, startR;
+        startC = col - (col % 3);
+        startR = row - (row % 3);
+        for(int rr = startR; rr < startR + 3; ++rr)
+        {
+            for(int cc = startC; cc < startC + 3; ++cc)
+            {
+                if(getActualAt(rr, cc) != 0)
+                {
+                    // That means there is an actual value in it
+                    str = str.replace(String.valueOf(getActualAt(rr, cc)), "");
+                }
+            }
+        }
+
+        // If the possible value is an empty string, throw an exception because it means
+        // that invalid moves have been made
+        if(str.equals(""))
+        {
+            throw new Exception("Invalid move.");
+        }
+
+        return str;
+    }
+
+    /**
      * Checks if this puzzle is solved.
      * @return <code>true</code> if this puzzle is solved; otherwise <code>false</code>.
      */
