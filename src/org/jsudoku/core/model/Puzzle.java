@@ -499,6 +499,24 @@ public class Puzzle {
     }
 
     /**
+     * Returns the backup copy of the actual matrix.
+     * @return Backup copy of the actual matrix.
+     */
+    public int[][] getActualBackup()
+    {
+        return actualBackup;
+    }
+
+    /**
+     * Sets the backup copy of the actual matrix.
+     * @param actualBackup Backup copy of the actual matrix.
+     */
+    public void setActualBackup(int[][] actualBackup)
+    {
+        this.actualBackup = actualBackup;
+    }
+
+    /**
      * Clears the actual stack from previously pushed items.
      */
     public void clearActualStack()
