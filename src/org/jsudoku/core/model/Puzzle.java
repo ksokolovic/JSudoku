@@ -499,6 +499,22 @@ public class Puzzle {
     }
 
     /**
+     * Clears the actual stack from previously pushed items.
+     */
+    public void clearActualStack()
+    {
+        actualStack.clear();
+    }
+
+    /**
+     * Clears the possible stack from previously pushed items.
+     */
+    public void clearPossibleStack()
+    {
+        possibleStack.clear();
+    }
+
+    /**
      * Returns the string representation of the puzzle grid.
      * @return String representation of the puzzle.
      */
