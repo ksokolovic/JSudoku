@@ -1036,6 +1036,16 @@ public class Solver {
         return builder.toString();
     }
 
+    /**
+     * Sets the value indicating if the brute force method should stop.
+     * @param bruteForceStop <code>true</code> if the brute force method
+     *                       should stop; <code>false</code> otherwise.
+     */
+    public void setBruteForceStop(boolean bruteForceStop)
+    {
+        this.bruteForceStop = bruteForceStop;
+    }
+
     private final Puzzle puzzle;                        // The puzzle being solved
     private boolean bruteForceStop = false;             // Indicate if the brute force method should stop
 
