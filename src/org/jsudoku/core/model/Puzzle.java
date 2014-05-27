@@ -21,6 +21,8 @@
  */
 package org.jsudoku.core.model;
 
+import java.util.Stack;
+
 /**
  * Class models a 9x9 Sudoku puzzle. A Sudoku puzzle is made up of 9x9 grid filled with numbers in [1..9] range.
  * The aim of the Sudoku game is to place a number from 1 to 9 into each of the cells, such that each number
@@ -420,6 +422,126 @@ public class Puzzle {
     }
 
     /**
+     * Finds the cell with the least number of possible values.
+     * @return Integer array with two elements: the element at index 0 represents
+     * cell's row index, and the element at index 1 represents cell's column index.
+     */
+    public int[] findCellWithFewestPossibleValues()
+    {
+        int[] position = new int[2];
+        int min = 10;
+
+        for(int row = 0; row < 9; ++row)
+        {
+            for(int col = 0; col < 9; ++col)
+            {
+                if((actual[row][col] == 0) && (possible[row][col].length() < min))
+                {
+                    min = possible[row][col].length();
+                    position[0] = row;
+                    position[1] = col;
+                }
+            }
+        }
+        return position;
+    }
+
+    /**
+     * Pushes the current actual matrix onto the stack so that it can be
+     * restored if necessary with <code>popActualStack()</code> method.
+     */
+    public void pushActualStack()
+    {
+        actualStack.push(actual.clone());
+    }
+
+    /**
+     * Pops the last actual matrix from the stack.
+     */
+    public void popActualStack()
+    {
+        actual = actualStack.pop();
+    }
+
+    /**
+     * Pushes the current possible matrix onto the stack so that it can be
+     * restored if necessary with <code>popPossibleStack()</code> method.
+     */
+    public void pushPossibleStack()
+    {
+        possibleStack.push(possible.clone());
+    }
+
+    /**
+     * Pops the last possible matrix from the stack.
+     */
+    public void popPossibleStack()
+    {
+        possible = possibleStack.pop();
+    }
+
+    /**
+     * Returns the total score.
+     * @return Total score.
+     */
+    public int getTotalScore()
+    {
+        return this.totalScore;
+    }
+
+    /**
+     * Sets the total score to the value specified.
+     * @param totalScore Total score to set.
+     */
+    public void setTotalScore(int totalScore)
+    {
+        this.totalScore = totalScore;
+    }
+
+    /**
+     * Returns the backup copy of the actual matrix.
+     * @return Backup copy of the actual matrix.
+     */
+    public int[][] getActualBackup()
+    {
+        return actualBackup;
+    }
+
+    /**
+     * Sets the backup copy of the actual matrix.
+     * @param actualBackup Backup copy of the actual matrix.
+     */
+    public void setActualBackup(int[][] actualBackup)
+    {
+        this.actualBackup = actualBackup;
+    }
+
+    /**
+     * Clears the actual stack from previously pushed items.
+     */
+    public void clearActualStack()
+    {
+        actualStack.clear();
+    }
+
+    /**
+     * Clears the possible stack from previously pushed items.
+     */
+    public void clearPossibleStack()
+    {
+        possibleStack.clear();
+    }
+
+    /**
+     * Returns the matrix representing the actual values in the grid.
+     * @return Matrix containing the actual values in the grid.
+     */
+    public int[][] getActual()
+    {
+        return this.actual;
+    }
+
+    /**
      * Returns the string representation of the puzzle grid.
      * @return String representation of the puzzle.
      */
@@ -439,5 +561,10 @@ public class Puzzle {
     }
 
     private int[][] actual;                         // A matrix holding the actual values of the puzzle
+    private int[][] actualBackup;                   // Backup copy of the actual matrix
     private String[][] possible;                    // A matrix used to keep track of the possible values for each cell
+    private Stack<int[][]> actualStack;             // Stack object used to strore the actual array before a cell is fixed with a value
+    private Stack<String[][]> possibleStack;        // Stack object used to store the possible array before a cell is fixed with a value
+    private int totalScore;                         // Puzzle total score
+
 }

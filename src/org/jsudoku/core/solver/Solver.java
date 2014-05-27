@@ -23,11 +23,16 @@ package org.jsudoku.core.solver;
 
 import org.jsudoku.core.model.Puzzle;
 
+import java.util.Random;
+
 /**
  * The class implements various algorithms for solving the Sudoku puzzle. The following algoritms are implemented:
  * <ul>
  *     <li>Elimination Technique (Row, Column and Minigrid Elimination)</li>
  *     <li>Lone Rangers Technique (Row, Column and Minigrid)</li>
+ *     <li>Looking for Twins Technique (Row, Column and Minigrid)</li>
+ *     <li>Looking for Triplets Technique (Row, Column and Minigrid)</li>
+ *     <li>Brute Force Elimination Technique</li>
  * </ul>
  *
  * @author sokolovic
@@ -42,6 +47,181 @@ public class Solver {
     public Solver(Puzzle puzzle)
     {
         this.puzzle = puzzle;
+    }
+
+    /**
+     * Method performes the core of the Sudoku solving by invoking the implemented
+     * algorithms in a specific order with an attempt to solve the puzzle.
+     * @return <code>true</code> if the puzzle is successfully solved; <code>false</code>
+     * otherwise.
+     */
+    public boolean solve() throws Exception
+    {
+        boolean changes;
+        boolean exitLoop = false;
+
+        try
+        {
+            do      // Look for Triplets in Columns
+            {
+                do      // Look for Triplets in Rows
+                {
+                    do      // Look for Triplets in Minigrids
+                    {
+                        do      // Look for Twins in Columns
+                        {
+                            do      // Look for Twins in Rows
+                            {
+                                do      // Look for Twins in Minigrids
+                                {
+                                    do      // Look for Lone Ranger in Columns
+                                    {
+                                        do      // Look for Lone Ranger in Rows
+                                        {
+                                            do      // Look for Lone Ranger in Minigrids
+                                            {
+                                                do      // Perform Column, Row and Minigrid Elimination
+                                                {
+                                                    changes = checkColumnsAndRows();
+                                                    if(puzzle.isSolved())
+                                                    {
+                                                        exitLoop = true;
+                                                        break;
+                                                    }
+                                                } while(changes);
+
+                                                if(exitLoop)
+                                                {
+                                                    break;
+                                                }
+
+                                                // Look for Lone Ranger in Minigrids
+                                                changes = lookForLoneRangersInMinigrids();
+                                                if(puzzle.isSolved())
+                                                {
+                                                    exitLoop = true;
+                                                    break;
+                                                }
+                                            } while(changes);
+
+                                            if(exitLoop)
+                                            {
+                                                break;
+                                            }
+
+                                            // Look for Lone Ranger in Rows
+                                            changes = lookForLoneRangersInRows();
+                                            if(puzzle.isSolved())
+                                            {
+                                                exitLoop = true;
+                                                break;
+                                            }
+                                        } while(changes);
+
+                                        if(exitLoop)
+                                        {
+                                            break;
+                                        }
+
+                                        // Look for Lone Ranger in Columns
+                                        changes = lookForLoneRangersInColumns();
+                                        if(puzzle.isSolved())
+                                        {
+                                            exitLoop = true;
+                                            break;
+                                        }
+                                    } while(changes);
+
+                                    if(exitLoop)
+                                    {
+                                        break;
+                                    }
+
+                                    // Look for Twins in Minigrids
+                                    changes = lookForTwinsInMinigrids();
+                                    if(puzzle.isSolved())
+                                    {
+                                        exitLoop = true;
+                                        break;
+                                    }
+                                } while(changes);
+
+                                if(exitLoop)
+                                {
+                                    break;
+                                }
+
+                                // Look for Twins in Rows
+                                changes = lookForTwinsInRows();
+                                if(puzzle.isSolved())
+                                {
+                                    exitLoop = true;
+                                    break;
+                                }
+                            } while(changes);
+
+                            if(exitLoop)
+                            {
+                                break;
+                            }
+
+                            // Look for Twins in Columns
+                            changes = lookForTwinsInColumns();
+                            if(puzzle.isSolved())
+                            {
+                                exitLoop = true;
+                                break;
+                            }
+                        } while(changes);
+
+                        if(exitLoop)
+                        {
+                            break;
+                        }
+
+                        // Look for Triplets in Minigrids
+                        changes = lookForTripletsInMinigrids();
+                        if(puzzle.isSolved())
+                        {
+                            exitLoop = true;
+                            break;
+                        }
+                    } while(changes);
+
+                    if(exitLoop)
+                    {
+                        break;
+                    }
+
+                    // Look for Triplets in Rows
+                    changes = lookForTripletsInRows();
+                    if(puzzle.isSolved())
+                    {
+                        exitLoop = true;
+                        break;
+                    }
+                } while(changes);
+
+                if(exitLoop)
+                {
+                    break;
+                }
+
+                // Look for Triplets in Columns
+                changes = lookForTripletsInColumns();
+                if(puzzle.isSolved())
+                {
+                    exitLoop = true;
+                    break;
+                }
+            } while(changes);
+        }
+        catch(Exception exception)
+        {
+            throw exception;
+        }
+
+        return puzzle.isSolved();
     }
 
     /**
@@ -79,6 +259,9 @@ public class Solver {
                         // Number is confirmed
                         puzzle.setActualAt(row, col, Integer.parseInt(puzzle.getPossibleAt(row, col)));
                         changes = true;
+
+                        // Accumulate the total score
+                        puzzle.setTotalScore(puzzle.getTotalScore() + 1);
                     }
                 }
             }
@@ -140,6 +323,9 @@ public class Solver {
                         // That means the number is confirmed
                         puzzle.setActualAt(rPos, cPos, n);
                         changes = true;
+
+                        // Accumulate the total score
+                        puzzle.setTotalScore(puzzle.getTotalScore() + 2);
                     }
                 }
             }
@@ -187,6 +373,9 @@ public class Solver {
                     // Number is confirmed
                     puzzle.setActualAt(rPos, cPos, n);
                     changes = true;
+
+                    // Accumulate the total score
+                    puzzle.setTotalScore(puzzle.getTotalScore() + 2);
                 }
             }
         }
@@ -233,6 +422,9 @@ public class Solver {
                     // Number is confirmed
                     puzzle.setActualAt(rPos, cPos, n);
                     changes = true;
+
+                    // Accumulate the total score
+                    puzzle.setTotalScore(puzzle.getTotalScore() + 2);
                 }
             }
         }
@@ -311,6 +503,9 @@ public class Solver {
                                             {
                                                 puzzle.setActualAt(rrr, ccc,
                                                     Integer.parseInt(puzzle.getPossibleAt(rrr, ccc)));
+
+                                                // Accumulate the total score
+                                                puzzle.setTotalScore(puzzle.getTotalScore() + 3);
                                             }
                                         }
                                     }
@@ -387,6 +582,9 @@ public class Solver {
                                     {
                                         puzzle.setActualAt(r, ccc,
                                             Integer.parseInt(puzzle.getPossibleAt(r, ccc)));
+
+                                        // Accumulate the total score
+                                        puzzle.setTotalScore(puzzle.getTotalScore() + 3);
                                     }
                                 }
                             }
@@ -461,6 +659,9 @@ public class Solver {
                                     {
                                         puzzle.setActualAt(rrr, c,
                                             Integer.parseInt(puzzle.getPossibleAt(rrr, c)));
+
+                                        // Accumulate the total score
+                                        puzzle.setTotalScore(puzzle.getTotalScore() + 3);
                                     }
                                 }
                             }
@@ -472,6 +673,415 @@ public class Solver {
         return changes;
     }
 
-    private final Puzzle puzzle;
+    /**
+     * Method scans through all the cells in the grid and looks for cells with
+     * three possible values. Once it finds a cell with three possible values, it
+     * searches for two other triplets in the minigrid that the cell is in. If
+     * there is indeed a set of triplets in the minigrid, the rest of the cells
+     * in the minigrid will have their list of possible values modified to remove
+     * the values of triplets. After the process, if there are cells left with
+     * one possible value, those cells are updated with the confirmed number.
+     * @return <code>true</code> if there are any changes to the list of possible
+     * values for any of the cells in the grid; <code>false</code> otherwise.
+     * @throws java.lang.Exception if an invalid move has been made.
+     */
+    private boolean lookForTripletsInMinigrids() throws Exception
+    {
+        boolean changes = false;
+
+        // Check each cell
+        for(int r = 0; r < 9; ++r)
+        {
+            for(int c = 0; c < 9; ++c)
+            {
+                // Three possible values, check for triplets
+                if((puzzle.getActualAt(r, c) == 0) && (puzzle.getPossibleAt(r, c).length() == 3))
+                {
+                    // First potential triplet found
+                    String tripletsLocation = String.valueOf(r) + String.valueOf(c);
+
+                    // Scan by minigrid
+                    int startC = c - (c % 3);
+                    int startR = r - (r % 3);
+
+                    for(int rr = startR; rr < startR + 3; ++rr)
+                    {
+                        for(int cc = startC; cc < startC + 3; ++cc)
+                        {
+                            if((!((cc == c) && (rr == r))) &&
+                                ((puzzle.getPossibleAt(rr, cc).equals(puzzle.getPossibleAt(r, c))) ||
+                                    (puzzle.getPossibleAt(rr, cc).length() == 2 &&
+                                    puzzle.getPossibleAt(r, c).contains(puzzle.getPossibleAt(rr, cc).substring(0, 1)) &&
+                                    puzzle.getPossibleAt(r, c).contains(puzzle.getPossibleAt(rr, cc).substring(1, 2)))))
+                            {
+                                // Save the coordinate of the triplets
+                                tripletsLocation += String.valueOf(rr) + String.valueOf(cc);
+                            }
+                        }
+                    }
+
+                    // Found 3 cells as triplets; remove all from other cells
+                    if(tripletsLocation.length() == 6)
+                    {
+                        // Remove each cell's possible values containing the triplet
+                        for(int rrr = startR; rrr < startR + 3; ++rrr)
+                        {
+                            for(int ccc = startC; ccc < startC + 3; ++ccc)
+                            {
+                                // Look for the cell that is not part of the 3 cells found
+                                if((puzzle.getActualAt(rrr, ccc) == 0) &&
+                                    (rrr != Integer.parseInt(tripletsLocation.substring(0, 1))) &&
+                                    (ccc != Integer.parseInt(tripletsLocation.substring(1, 2))) &&
+                                    (rrr != Integer.parseInt(tripletsLocation.substring(2, 3))) &&
+                                    (ccc != Integer.parseInt(tripletsLocation.substring(3, 4))) &&
+                                    (rrr != Integer.parseInt(tripletsLocation.substring(4, 5))) &&
+                                    (ccc != Integer.parseInt(tripletsLocation.substring(5, 6))))
+                                {
+                                    // Save the original possible values
+                                    String original_possible = puzzle.getPossibleAt(rrr, ccc);
+                                    // Remove the first triplet number from possible values
+                                    puzzle.setPossibleAt(rrr, ccc,
+                                        puzzle.getPossibleAt(rrr, ccc).replace(puzzle.getPossibleAt(r, c).substring(0, 1), ""));
+                                    // Remove the second triplet number from possible values
+                                    puzzle.setPossibleAt(rrr, ccc,
+                                        puzzle.getPossibleAt(rrr, ccc).replace(puzzle.getPossibleAt(r, c).substring(1, 2), ""));
+                                    // Remove the third triplet number from possible values
+                                    puzzle.setPossibleAt(rrr, ccc,
+                                        puzzle.getPossibleAt(rrr, ccc).replace(puzzle.getPossibleAt(r, c).substring(2, 3), ""));
+
+                                    // If the possible values are modified, then set the changes variable to
+                                    // true to indicate that the possible values of cells in the minigrid are
+                                    // modified
+                                    if(!original_possible.equals(puzzle.getPossibleAt(rrr, ccc)))
+                                    {
+                                        changes = true;
+                                    }
+
+                                    // If possible value reduces to empty string, then the user has
+                                    // placed a move that results in the puzzle being not solvable
+                                    if(puzzle.getPossibleAt(rrr, ccc).equals(""))
+                                    {
+                                        throw new Exception("Invalid move.");
+                                    }
+
+                                    // If left with one possible value for the current cell, cell is confirmed
+                                    if(puzzle.getPossibleAt(rrr, ccc).length() == 1)
+                                    {
+                                        puzzle.setActualAt(rrr, ccc,
+                                            Integer.parseInt(puzzle.getPossibleAt(rrr, ccc)));
+
+                                        // Accumulate the total score
+                                        puzzle.setTotalScore(puzzle.getTotalScore() + 4);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return changes;
+    }
+
+    /**
+     * Method scans through all the cells in the grid and looks for cells with
+     * three possible values. Once it finds a cell with three possible values, it
+     * searches for two other triplets in the row that the cell is in. If there
+     * is indeed a set of triplets in the row, the rest of the cells in the row
+     * will have their list of possible values modified to remove the values of
+     * triplets. After the process, if there are cells with one possible value,
+     * those cells are updated with the confirmed number.
+     * @return <code>true</code> if there are any changes to the list of possible
+     * values for any of the cells in the grid; <code>false</code> otherwise.
+     * @throws java.lang.Exception if an invalid move has been made.
+     */
+    private boolean lookForTripletsInRows() throws Exception
+    {
+        boolean changes = false;
+
+        // For each row, check each column in the row
+        for(int r = 0; r < 9; ++r)
+        {
+            for(int c = 0; c < 9; ++c)
+            {
+                // Three possible values; check for triplets
+                if((puzzle.getActualAt(r, c) == 0) && (puzzle.getPossibleAt(r, c).length() == 3))
+                {
+                    // First potential triplet found
+                    String tripletsLocation = String.valueOf(r) + String.valueOf(c);
+
+                    // Scan columns in this row
+                    for(int cc = 0; cc < 9; ++cc)
+                    {
+                        // Look for other triplets
+                        if((cc != c) &&
+                            ((puzzle.getPossibleAt(r, cc).equals(puzzle.getPossibleAt(r, c))) ||
+                                (puzzle.getPossibleAt(r, cc).length() == 2 &&
+                                puzzle.getPossibleAt(r, c).contains(puzzle.getPossibleAt(r, cc).substring(0, 1)) &&
+                                puzzle.getPossibleAt(r, c).contains(puzzle.getPossibleAt(r, cc).substring(1, 2)))))
+                        {
+                            // Save the coorinates of the triplets
+                            tripletsLocation += String.valueOf(r) + String.valueOf(cc);
+                        }
+                    }
+
+                    // Found 3 cells as triplets; remove all from the other cells
+                    if(tripletsLocation.length() == 6)
+                    {
+                        // Remove each cell's possible values containing the triplet
+                        for(int ccc = 0; ccc < 9; ++ccc)
+                        {
+                            if((puzzle.getActualAt(r, ccc) == 0) &&
+                                (ccc != Integer.parseInt(tripletsLocation.substring(1, 2))) &&
+                                (ccc != Integer.parseInt(tripletsLocation.substring(3, 4))) &&
+                                (ccc != Integer.parseInt(tripletsLocation.substring(5, 6))))
+                            {
+                                // Save the original possible values
+                                String original_possible = puzzle.getPossibleAt(ccc, r);
+
+                                // Remove the first triplet number from possible values
+                                puzzle.setPossibleAt(r, ccc,
+                                    puzzle.getPossibleAt(r, ccc).replace(puzzle.getPossibleAt(r, c).substring(0, 1), ""));
+                                // Remove the second triplet number from possible values
+                                puzzle.setPossibleAt(r, ccc,
+                                    puzzle.getPossibleAt(r, ccc).replace(puzzle.getPossibleAt(r, c).substring(1, 2), ""));
+                                // Remove the third triplet number from possible values
+                                puzzle.setPossibleAt(r, ccc,
+                                    puzzle.getPossibleAt(r, ccc).replace(puzzle.getPossibleAt(r, c).substring(2, 3), ""));
+
+                                // If the possible values are modified, then set the changes variable
+                                // to true to indicate that the possible values of cells in the row
+                                // are modified
+                                if(!original_possible.equals(puzzle.getPossibleAt(r, ccc)))
+                                {
+                                    changes = true;
+                                }
+
+                                // If the possible value reduces to empty string, then the user
+                                // has placed a move that results in the puzzle being not solvable
+                                if(puzzle.getPossibleAt(r, ccc).equals(""))
+                                {
+                                    throw new Exception("Invalid move.");
+                                }
+
+                                // If left with one possible value for the current cell, cell is confirmed
+                                if(puzzle.getPossibleAt(r, ccc).length() == 1)
+                                {
+                                    puzzle.setActualAt(r, ccc,
+                                        Integer.parseInt(puzzle.getPossibleAt(r, ccc)));
+
+                                    // Accumulate the total score
+                                    puzzle.setTotalScore(puzzle.getTotalScore() + 4);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return changes;
+    }
+
+    /**
+     * Method scans through all the cells in the grid and looks for cells with
+     * three possible values. Once it finds a cell with three possible values, it
+     * searches for two other triplets in the column that the cell is in. If there
+     * is indeed a set of triplets, in the column, the rest of the cells in the
+     * column will have their list of possible values modified to remove the
+     * values of triplets. After the process, if there are cells left with one
+     * possible value, those cells are updated with the confirmed number.
+     * @return <code>true</code> if there are any changes to the list of possible
+     * values for any of the cells in the grid; <code>false</code> otherwise.
+     * @throws java.lang.Exception if an invalid move has been made.
+     */
+    private boolean lookForTripletsInColumns() throws Exception
+    {
+        boolean changes = false;
+
+        // For each column, check each row in the column
+        for(int c = 0; c < 9; ++c)
+        {
+            for(int r = 0; r < 9; ++r)
+            {
+                // Three possible values; check for triplets
+                if((puzzle.getActualAt(r, c) == 0) && (puzzle.getPossibleAt(r, c).length() == 3))
+                {
+                    // First potential triplet found
+                    String tripletsLocation = String.valueOf(r) + String.valueOf(c);
+
+                    // Scan rows in this column
+                    for(int rr = 0; rr < 9; ++rr)
+                    {
+                        if((rr != r) &&
+                            ((puzzle.getPossibleAt(rr, c).equals(puzzle.getPossibleAt(r, c))) ||
+                                (puzzle.getPossibleAt(rr, c).length() == 2 &&
+                                puzzle.getPossibleAt(r, c).contains(puzzle.getPossibleAt(rr, c).substring(0, 1)) &&
+                                puzzle.getPossibleAt(r, c).contains(puzzle.getPossibleAt(rr, c).substring(1, 2)))))
+                        {
+                            // Save the coordinates of the triplet
+                            tripletsLocation += String.valueOf(rr) + String.valueOf(c);
+                        }
+                    }
+
+                    // Found 3 cells as triplets; remove all from the other cells
+                    if(tripletsLocation.length() == 6)
+                    {
+                        // Remove each cell's possible values containing the triplet
+                        for(int rrr = 0; rrr < 9; ++rrr)
+                        {
+                            if((puzzle.getActualAt(rrr, c) == 0) &&
+                                (rrr != Integer.parseInt(tripletsLocation.substring(0, 1))) &&
+                                (rrr != Integer.parseInt(tripletsLocation.substring(2, 3))) &&
+                                (rrr != Integer.parseInt(tripletsLocation.substring(4, 5))))
+                            {
+                                // Save the original possible values
+                                String original_possible = puzzle.getPossibleAt(rrr, c);
+
+                                // Remove the first triplet number from possible values
+                                puzzle.setPossibleAt(rrr, c,
+                                    puzzle.getPossibleAt(rrr, c).replace(puzzle.getPossibleAt(r, c).substring(0, 1), ""));
+                                // Remove the second triplet number from possible values
+                                puzzle.setPossibleAt(rrr, c,
+                                    puzzle.getPossibleAt(rrr, c).replace(puzzle.getPossibleAt(r, c).substring(1, 2), ""));
+                                // Remove the third triplet number from possible values
+                                puzzle.setPossibleAt(rrr, c,
+                                    puzzle.getPossibleAt(rrr, c).replace(puzzle.getPossibleAt(r, c).substring(2, 3), ""));
+
+                                // If the possible values are modified, then set the changes variable
+                                // to true to indicate that the possible values of cells in the minigrid
+                                // are modified
+                                if(!original_possible.equals(puzzle.getPossibleAt(rrr, c)))
+                                {
+                                    changes = true;
+                                }
+
+                                // If possible value reduces to empty string, then the user has placed
+                                // a move that results in the puzzle being not solvable
+                                if(puzzle.getPossibleAt(rrr, c).equals(""))
+                                {
+                                    throw new Exception("Invalid move.");
+                                }
+
+                                // If left with one possible value for the current cell, cell is confirmed
+                                if(puzzle.getPossibleAt(rrr, c).length() == 1)
+                                {
+                                    puzzle.setActualAt(rrr, c,
+                                        Integer.parseInt(puzzle.getPossibleAt(rrr, c)));
+
+                                    // Accumulate the total score
+                                    puzzle.setTotalScore(puzzle.getTotalScore() + 4);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return changes;
+    }
+
+    /**
+     * A recursive method that attempts to solve a Sudoku puzzle by systematically
+     * selecting a possible value from a cell and then applying all the other
+     * techiques to solve the puzzle. It calls itself until the puzzle is solved,
+     * or if selecting a particular value for a cell causes the puzzle to be unsolvable
+     * it backtracks by restoring the previous state of the grid from puzzle's stack.
+     */
+    public void solvePuzzleByBruteForce()
+    {
+        int row = 0;
+        int col = 0;
+
+        // Accumulate the total score
+        puzzle.setTotalScore(puzzle.getTotalScore() + 5);
+
+        // Find out which cell has the smallest number of possible values
+        int[] cell = puzzle.findCellWithFewestPossibleValues();
+        row = cell[0];
+        col = cell[1];
+
+        // Get the possible values for the chosen cell
+        String possibleValues = puzzle.getPossibleAt(row, col);
+
+        // Randomize the possible values
+        possibleValues = randomizePossibleValues(possibleValues);
+
+        // Push the actual and possible matrices onto the stack
+        puzzle.pushActualStack();
+        puzzle.pushPossibleStack();
+
+        // Select one value and try
+        for(int i = 0; i <= possibleValues.length() - 1; ++i)
+        {
+            puzzle.setActualAt(row, col,
+                Integer.parseInt(possibleValues.substring(i, i + 1)));
+            try
+            {
+                if(solve())
+                {
+                    // If the puzzle is solved, the recursion can stop now
+                    bruteForceStop = true;
+                    return;
+                }
+                else
+                {
+                    solvePuzzleByBruteForce();
+                    if(bruteForceStop)
+                    {
+                        return;
+                    }
+                }
+            }
+            catch(Exception exception)
+            {
+                // Accumulate the total score
+                puzzle.setTotalScore(puzzle.getTotalScore() + 5);
+                puzzle.popActualStack();
+                puzzle.popPossibleStack();
+            }
+        }
+    }
+
+    /**
+     * Method randomizes the list of possible values for a cell.
+     * @param str String containing the cell's possible values.
+     * @return Randomized list of cell's possible values as string.
+     */
+    private String randomizePossibleValues(String str)
+    {
+        char[] s = str.toCharArray();
+        int i, j;
+        char temp;
+        Random random = new Random();
+
+        for(i = 0; i <= str.length() - 1; ++i)
+        {
+            j = (int)((str.length() - i + 1) * random.nextDouble() + i) % str.length();
+            // Swap the chars
+            temp = s[i];
+            s[i] = s[j];
+            s[j] = temp;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for(int k = 0; k < s.length; ++k)
+        {
+            builder.append(s[k]);
+        }
+        return builder.toString();
+    }
+
+    /**
+     * Sets the value indicating if the brute force method should stop.
+     * @param bruteForceStop <code>true</code> if the brute force method
+     *                       should stop; <code>false</code> otherwise.
+     */
+    public void setBruteForceStop(boolean bruteForceStop)
+    {
+        this.bruteForceStop = bruteForceStop;
+    }
+
+    private final Puzzle puzzle;                        // The puzzle being solved
+    private boolean bruteForceStop = false;             // Indicate if the brute force method should stop
 
 }
