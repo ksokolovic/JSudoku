@@ -259,6 +259,9 @@ public class Solver {
                         // Number is confirmed
                         puzzle.setActualAt(row, col, Integer.parseInt(puzzle.getPossibleAt(row, col)));
                         changes = true;
+
+                        // Accumulate the total score
+                        puzzle.setTotalScore(puzzle.getTotalScore() + 1);
                     }
                 }
             }
@@ -320,6 +323,9 @@ public class Solver {
                         // That means the number is confirmed
                         puzzle.setActualAt(rPos, cPos, n);
                         changes = true;
+
+                        // Accumulate the total score
+                        puzzle.setTotalScore(puzzle.getTotalScore() + 2);
                     }
                 }
             }
@@ -367,6 +373,9 @@ public class Solver {
                     // Number is confirmed
                     puzzle.setActualAt(rPos, cPos, n);
                     changes = true;
+
+                    // Accumulate the total score
+                    puzzle.setTotalScore(puzzle.getTotalScore() + 2);
                 }
             }
         }
@@ -413,6 +422,9 @@ public class Solver {
                     // Number is confirmed
                     puzzle.setActualAt(rPos, cPos, n);
                     changes = true;
+
+                    // Accumulate the total score
+                    puzzle.setTotalScore(puzzle.getTotalScore() + 2);
                 }
             }
         }
@@ -491,6 +503,9 @@ public class Solver {
                                             {
                                                 puzzle.setActualAt(rrr, ccc,
                                                     Integer.parseInt(puzzle.getPossibleAt(rrr, ccc)));
+
+                                                // Accumulate the total score
+                                                puzzle.setTotalScore(puzzle.getTotalScore() + 3);
                                             }
                                         }
                                     }
@@ -567,6 +582,9 @@ public class Solver {
                                     {
                                         puzzle.setActualAt(r, ccc,
                                             Integer.parseInt(puzzle.getPossibleAt(r, ccc)));
+
+                                        // Accumulate the total score
+                                        puzzle.setTotalScore(puzzle.getTotalScore() + 3);
                                     }
                                 }
                             }
@@ -641,6 +659,9 @@ public class Solver {
                                     {
                                         puzzle.setActualAt(rrr, c,
                                             Integer.parseInt(puzzle.getPossibleAt(rrr, c)));
+
+                                        // Accumulate the total score
+                                        puzzle.setTotalScore(puzzle.getTotalScore() + 3);
                                     }
                                 }
                             }
@@ -748,6 +769,9 @@ public class Solver {
                                     {
                                         puzzle.setActualAt(rrr, ccc,
                                             Integer.parseInt(puzzle.getPossibleAt(rrr, ccc)));
+
+                                        // Accumulate the total score
+                                        puzzle.setTotalScore(puzzle.getTotalScore() + 4);
                                     }
                                 }
                             }
@@ -845,6 +869,9 @@ public class Solver {
                                 {
                                     puzzle.setActualAt(r, ccc,
                                         Integer.parseInt(puzzle.getPossibleAt(r, ccc)));
+
+                                    // Accumulate the total score
+                                    puzzle.setTotalScore(puzzle.getTotalScore() + 4);
                                 }
                             }
                         }
@@ -940,6 +967,9 @@ public class Solver {
                                 {
                                     puzzle.setActualAt(rrr, c,
                                         Integer.parseInt(puzzle.getPossibleAt(rrr, c)));
+
+                                    // Accumulate the total score
+                                    puzzle.setTotalScore(puzzle.getTotalScore() + 4);
                                 }
                             }
                         }
@@ -961,6 +991,9 @@ public class Solver {
     {
         int row = 0;
         int col = 0;
+
+        // Accumulate the total score
+        puzzle.setTotalScore(puzzle.getTotalScore() + 5);
 
         // Find out which cell has the smallest number of possible values
         int[] cell = puzzle.findCellWithFewestPossibleValues();
@@ -1001,6 +1034,8 @@ public class Solver {
             }
             catch(Exception exception)
             {
+                // Accumulate the total score
+                puzzle.setTotalScore(puzzle.getTotalScore() + 5);
                 puzzle.popActualStack();
                 puzzle.popPossibleStack();
             }
