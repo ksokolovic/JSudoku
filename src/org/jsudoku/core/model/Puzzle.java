@@ -40,7 +40,11 @@ public class Puzzle {
     public Puzzle()
     {
         initializeActual();
+        actualBackup = new int[9][9];
         initializePossible();
+        actualStack = new Stack<>();
+        possibleStack = new Stack<>();
+        totalScore = 0;
     }
 
     /**
