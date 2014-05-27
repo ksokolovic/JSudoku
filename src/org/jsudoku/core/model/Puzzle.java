@@ -533,6 +533,15 @@ public class Puzzle {
     }
 
     /**
+     * Returns the matrix representing the actual values in the grid.
+     * @return Matrix containing the actual values in the grid.
+     */
+    public int[][] getActual()
+    {
+        return this.actual;
+    }
+
+    /**
      * Returns the string representation of the puzzle grid.
      * @return String representation of the puzzle.
      */
