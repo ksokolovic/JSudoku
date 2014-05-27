@@ -239,7 +239,46 @@ public class Generator {
      */
     private void createEmptyCells(int number)
     {
-        // TODO 
+        int row, col;
+        // Choose random locations for empty cells
+        String[] emptyCells = new String[number];
+        for(int i = 0; i <= (number / 2); ++i)
+        {
+            boolean duplicate;
+            do
+            {
+                duplicate = false;
+                // Get a cell in the first half of the grid
+                do
+                {
+                    col = randomNumber(0, 8);
+                    row = randomNumber(0, 4);
+                } while((col > 4) && (row == 4));
+
+                for(int j = 0; j <= i; ++j)
+                {
+                    // If cell is already selected to be empty
+                    if(emptyCells[j] != null &&
+                        emptyCells[j].equals(String.valueOf(row) + String.valueOf(col)))
+                    {
+                        duplicate = true;
+                        break;
+                    }
+                }
+
+                if(!duplicate)
+                {
+                    // Set the empty cell
+                    emptyCells[i] = String.valueOf(row) + String.valueOf(col);
+                    puzzle.setActualAt(row, col, 0);
+                    puzzle.setPossibleAt(row, col, "");
+                    // Reflect the top half of the grid and make it symetrical
+                    emptyCells[number - i - 1] = String.valueOf(8 - row) + String.valueOf(8 - col);
+                    puzzle.setActualAt(8 - row, 8 - col, 0);
+                    puzzle.setPossibleAt(8 - row, 8 - col, "");
+                }
+            } while(duplicate);
+        }
     }
 
     private Solver solver;          // The solver that we use to create the puzzle in reverse
