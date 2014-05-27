@@ -481,6 +481,24 @@ public class Puzzle {
     }
 
     /**
+     * Returns the total score.
+     * @return Total score.
+     */
+    public int getTotalScore()
+    {
+        return this.totalScore;
+    }
+
+    /**
+     * Sets the total score to the value specified.
+     * @param totalScore Total score to set.
+     */
+    public void setTotalScore(int totalScore)
+    {
+        this.totalScore = totalScore;
+    }
+
+    /**
      * Returns the string representation of the puzzle grid.
      * @return String representation of the puzzle.
      */
@@ -504,5 +522,6 @@ public class Puzzle {
     private String[][] possible;                    // A matrix used to keep track of the possible values for each cell
     private Stack<int[][]> actualStack;             // Stack object used to strore the actual array before a cell is fixed with a value
     private Stack<String[][]> possibleStack;        // Stack object used to store the possible array before a cell is fixed with a value
+    private int totalScore;                         // Puzzle total score
 
 }
