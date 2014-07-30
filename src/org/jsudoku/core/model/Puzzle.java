@@ -270,7 +270,7 @@ public class Puzzle {
             if(getActualAt(row, c) != 0)
             {
                 // That means there is an actual value in it
-                str = str.replace(String.valueOf(getActualAt(c, row)), "");
+                str = str.replace(String.valueOf(getActualAt(row, c)), "");
             }
         }
 
