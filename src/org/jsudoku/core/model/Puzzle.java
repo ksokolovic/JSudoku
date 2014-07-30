@@ -40,7 +40,11 @@ public class Puzzle {
     public Puzzle()
     {
         initializeActual();
+        actualBackup = new int[9][9];
         initializePossible();
+        actualStack = new Stack<>();
+        possibleStack = new Stack<>();
+        totalScore = 0;
     }
 
     /**
@@ -266,7 +270,7 @@ public class Puzzle {
             if(getActualAt(row, c) != 0)
             {
                 // That means there is an actual value in it
-                str = str.replace(String.valueOf(getActualAt(c, row)), "");
+                str = str.replace(String.valueOf(getActualAt(row, c)), "");
             }
         }
 
