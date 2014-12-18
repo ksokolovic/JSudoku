@@ -132,11 +132,6 @@ public class Solver {
                                         }
                                     } while(changes);
 
-                                    if(exitLoop)
-                                    {
-                                        break;
-                                    }
-
                                     // Look for Twins in Minigrids
                                     changes = lookForTwinsInMinigrids();
                                     if(puzzle.isSolved())
@@ -145,11 +140,6 @@ public class Solver {
                                         break;
                                     }
                                 } while(changes);
-
-                                if(exitLoop)
-                                {
-                                    break;
-                                }
 
                                 // Look for Twins in Rows
                                 changes = lookForTwinsInRows();
@@ -160,11 +150,6 @@ public class Solver {
                                 }
                             } while(changes);
 
-                            if(exitLoop)
-                            {
-                                break;
-                            }
-
                             // Look for Twins in Columns
                             changes = lookForTwinsInColumns();
                             if(puzzle.isSolved())
@@ -173,11 +158,6 @@ public class Solver {
                                 break;
                             }
                         } while(changes);
-
-                        if(exitLoop)
-                        {
-                            break;
-                        }
 
                         // Look for Triplets in Minigrids
                         changes = lookForTripletsInMinigrids();
@@ -188,11 +168,6 @@ public class Solver {
                         }
                     } while(changes);
 
-                    if(exitLoop)
-                    {
-                        break;
-                    }
-
                     // Look for Triplets in Rows
                     changes = lookForTripletsInRows();
                     if(puzzle.isSolved())
@@ -201,11 +176,6 @@ public class Solver {
                         break;
                     }
                 } while(changes);
-
-                if(exitLoop)
-                {
-                    break;
-                }
 
                 // Look for Triplets in Columns
                 changes = lookForTripletsInColumns();
@@ -729,6 +699,7 @@ public class Solver {
                             for(int ccc = startC; ccc < startC + 3; ++ccc)
                             {
                                 // Look for the cell that is not part of the 3 cells found
+                                // ERROR: This condition never evaluates to True
                                 if((puzzle.getActualAt(rrr, ccc) == 0) &&
                                     (rrr != Integer.parseInt(tripletsLocation.substring(0, 1))) &&
                                     (ccc != Integer.parseInt(tripletsLocation.substring(1, 2))) &&
@@ -837,7 +808,7 @@ public class Solver {
                                 (ccc != Integer.parseInt(tripletsLocation.substring(5, 6))))
                             {
                                 // Save the original possible values
-                                String original_possible = puzzle.getPossibleAt(ccc, r);
+                                String original_possible = puzzle.getPossibleAt(r, ccc);
 
                                 // Remove the first triplet number from possible values
                                 puzzle.setPossibleAt(r, ccc,
