@@ -26,13 +26,6 @@ The library provides the following classes:
 
 The documentation can be reached at the [wiki page](https://bitbucket.org/sokolovic/jsudoku/wiki).
 
-# Contributing
-* * *
-
-## Bug reports
-
-In case you discover any bugs, feel free to report them [here](https://bitbucket.org/sokolovic/jsudoku/issues). When reporting the bug you should try to provide as many details as possible to help us fixing the possible issue.
-
 # Usage
 * * *
 
@@ -64,7 +57,10 @@ After getting the information on successful build, the target JAR is in the ```/
 |:----------------|:------------------------------------:|:-------------------:|
 | Kemal Sokolović | kemal DOT sokolovic AT gmail DOT com | kemal DOT sokolovic |
 
+
 ## Contributors
+
+In case you discover any bugs or want to contribute to the project in any way, feel free to raise an issue [here](https://bitbucket.org/sokolovic/jsudoku/issues).
 
 | Name            | E-mail address                       | Skype ID            |
 |:----------------|:------------------------------------:|:-------------------:|
