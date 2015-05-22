@@ -41,7 +41,7 @@ $ git clone https://sokolovic@bitbucket.org/sokolovic/jsudoku.git
 You can build a library JAR by running the *Ant* as follows (assuming you're on the same directory level where the ```build.xml``` file resides):
 
 ```sh
-$ ant compile jar
+$ ant
 ```
 
 After getting the information on successful build, the target JAR is in the ```/build/jar/``` subdirectory of the root project directory. 
