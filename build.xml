@@ -1,17 +1,38 @@
-<project>
-    
-    <target name="clean">
-        <delete dir="build"/>
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="jsudoku" default="main" basedir=".">
+
+    <property name="src" value="${basedir}/src" />
+    <property name="build-classes" value="${basedir}/build/classes" />
+    <property name="build-jar" value="${basedir}/build/jar" />
+
+    <!-- Initialize environment -->
+    <target name="init">
+        <echo message="java.home = ${java.home}" />
     </target>
 
-    <target name="compile">
-        <mkdir dir="build/classes"/>
-        <javac srcdir="src" destdir="build/classes"/>
+    <!-- Delete all built files -->
+    <target name="clean" depends="init">
+        <delete dir="${build-classes}" />
+        <delete dir="${build-jar}" />
     </target>
 
-    <target name="jar">
-        <mkdir dir="build/jar"/>
-        <jar destfile="build/jar/jsudoku.jar" basedir="build/classes"/>
+    <!-- Compile java sources -->
+    <target name="compile" depends="clean">
+        <mkdir dir="${build-classes}" />
+        <javac srcdir="${src}" destdir="${build-classes}"/>
     </target>
+
+    <!-- Build jar from compiled .class files and original .java source files -->
+    <target name="jar" depends="compile">
+        <mkdir dir="${build-jar}" />
+        <jar destfile="${build-jar}/jsudoku.jar">
+            <fileset dir="${build-classes}" />
+            <fileset dir="${src}" />
+        </jar>
+    </target>
+
+    <!-- Main -->
+    <target name="main" depends="jar" />
 
 </project>
