@@ -22,6 +22,10 @@ The library provides the following classes:
     * Minigrid Triplets Technique
     * Brute Force Elimination Technique
 
+## Documentation
+
+The documentation can be reached at the [wiki page](https://bitbucket.org/sokolovic/jsudoku/wiki).
+
 # Contributing
 * * *
 
